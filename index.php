@@ -29,15 +29,15 @@
   </head>
   <body>
     <!-- Section: Design Block -->
-    <section class="text-center" style="background: whitesmoke; height: 100vh">
+    <section class="text-center" style="background: whitesmoke; height: 100vh;">
       <!-- Background image -->
       <div
         class="p-5 bg-image"
         style="
-          background-image: url(Banner.png);
-          background-size: contain;
+          background-image: url(Images/Banner.png);
+          background-size: cover;
           background-repeat: no-repeat;
-          height: 300px;
+          height: 32vh;
         "
       ></div>
       <!-- Background image -->
@@ -63,8 +63,8 @@
                     >Nombre de Usuario</label
                   >
                   <input
-                    type="email"
-                    id="form3Example3"
+                    type="text"
+                    id="username"
                     class="form-control"
                     required
                   />
@@ -77,14 +77,14 @@
                   >
                   <input
                     type="password"
-                    id="form3Example4"
+                    id="password"
                     class="form-control"
                     required
                   />
                 </div>
 
                 <!-- Submit button -->
-                <button type="submit" class="btn btn-primary btn-block mb-4">
+                <button type="submit" id="iniciarSesion" class="btn btn-primary btn-block mb-4">
                   Iniciar Sesión
                 </button>
               </form>
@@ -95,5 +95,35 @@
     </section>
     <!-- Section: Design Block -->
   </body>
-  <script></script>
+  <script>
+  let botonIniciarSesion = document.getElementById("iniciarSesion");
+  let username;
+  let password;
+
+  function validarUsuario(){
+    username = document.getElementById("username").value;
+    password = document.getElementById("password").value;
+
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function(){
+      if(this.readyState == 4 && this.status == 200){
+        if(this.responseText==1){
+          alert("¡Bienvenido, "+username+" !!");
+          location.href ="paginaprincipal.php";
+        }else{
+          alert("Nombre de usuario o contraseña incorrectos");
+          location.href ="index.php";
+        }
+      }
+    }
+    xhttp.open ("POST", "validar_usuario.php", true);
+    xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xhttp.send("username=" + username + "&password=" + password);
+  }
+
+  botonIniciarSesion.addEventListener("click", function(){
+    validarUsuario();
+  });
+
+</script>
 </html>
