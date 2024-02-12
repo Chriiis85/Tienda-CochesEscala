@@ -1,0 +1,237 @@
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+
+body{
+    margin: 0;
+    width: 100vw;
+    height: 100vh;
+    font-family: "Bebas Neue", sans-serif;
+    overflow-x: hidden;
+    background-color: transparent;
+}
+
+header{
+    width: 100vw;
+    height: 10vh;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    background-color: #252525;
+    border: 1px solid black;
+}
+
+.title{
+    font-size: 2em;
+    color: white;
+}
+
+/*BOTONES*/
+.botones{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;   
+
+}
+
+.buttonlogin {
+  background-color: #FFFFFF;
+  border: 5px solid transparent;
+  border-radius: .5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
+  box-sizing: border-box;
+  color: #111827;
+  font-family: "Inter var",ui-sans-serif,system-ui,-apple-system,system-ui,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+  font-size: 1em;
+  font-weight: bold;
+  line-height: 1.25rem;
+  padding: .75rem 1rem;
+  text-align: center;
+  text-decoration: none #D1D5DB solid;
+  text-decoration-thickness: auto;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+.buttonlogin:hover {
+  background-color: rgb(249,250,251);
+}
+
+.buttonlogin:focus {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+
+.buttonlogin:focus-visible {
+  box-shadow: none;
+}
+
+/*BARRA DE BUSQUEDA*/
+.group {
+  display: flex;
+  line-height: 28px;
+  align-items: center;
+  position: relative;
+  max-width: 190px;
+}
+
+.input {
+  width: 100%;
+  height: 40px;
+  line-height: 28px;
+  padding: 0 1rem;
+  padding-left: 2.5rem;
+  border: 2px solid transparent;
+  border-radius: 8px;
+  outline: none;
+  background-color: #f3f3f4;
+  color: #0d0c22;
+  transition: 0.3s ease;
+}
+
+.input::placeholder {
+  color: #9e9ea7;
+  font-weight: bold;
+}
+
+.input:focus,
+input:hover {
+  outline: none;
+  border-color: rgba(255, 255, 255, 0.7);
+  background-color: #fff;
+  box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.3);
+}
+
+.icon {
+  position: absolute;
+  left: 1rem;
+  fill: #9e9ea7;
+  width: 1rem;
+  height: 1rem;
+}
+
+
+/*BOTON DE LA COMPRA*/
+.btn-cart {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    border-radius: 10px;
+    border: none;
+    background-color: transparent;
+    position: relative;
+  }
+  
+  .btn-cart::after {
+    content: attr(data-quantity);
+    width: fit-content;
+    height: fit-content;
+    position: absolute;
+    font-size: 15px;
+    font-weight: bold;
+    color: white;
+    opacity: 0;
+    visibility: hidden;
+    transition: .2s linear;
+    top: 115%;
+  }
+  
+  .icon-cart {
+    width: 26px;
+    height: 30px;
+    transition: .2s linear;
+    cursor: pointer;
+
+  }
+  
+  .icon-cart path {
+    fill: white;
+    transition: .2s linear;
+  }
+  
+  .btn-cart:hover > .icon-cart {
+    transform: scale(1.3);
+  }
+  
+  .btn-cart:hover > .icon-cart path {
+    fill: white;
+  }
+  
+  .btn-cart:hover::after {
+    visibility: visible;
+    opacity: 1;
+    top: 105%;
+  }
+  
+  .quantity {
+    display: none;
+  }
+  
+
+
+/*CONTENIDO PRINCIPAL*/
+.body{
+   margin: 100px;
+   background-color: #252525;
+}
+
+.car-presentation{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    color: white;
+}
+
+.image{
+    width: 40%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.image > img{
+    width: 70%;
+    height: 100%;
+    border: 5px solid black;
+}
+
+/* Zoom In #1 */
+.image > img {
+	-webkit-transform: scale(1);
+	transform: scale(1);
+	-webkit-transition: .3s ease-in-out;
+	transition: .3s ease-in-out;
+}
+.image > img:hover {
+	-webkit-transform: scale(1.1);
+	transform: scale(1.1);
+    cursor: pointer;
+}
+
+.description{
+    width: 60%;
+    height: 100%;
+    margin: 100px;
+    color: white;
+}
+.description > h1{
+    margin: 0;
+    font-size: 3em;
+    text-align: center;
+}
+
+footer{
+    width: 100vw;
+    height: 20%;
+    background-color: #252525;
+}
+
