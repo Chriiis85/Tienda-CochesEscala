@@ -44,7 +44,7 @@
       <div
         class="card mx-4 mx-md-5 shadow-5-strong"
         style="
-          margin-top: -100px;
+          margin-top: -50px;
           background: hsla(0, 0%, 100%, 0.8);
           backdrop-filter: blur(30px);
           height:50vh;

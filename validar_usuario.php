@@ -1,4 +1,5 @@
 <?php
+session_start();
 // Recibimos los datos del formulario desde el AJAX
 $username = $_POST['username'];
 $password = $_POST['password'];
@@ -19,6 +20,7 @@ if (!$con->connect_error) {
 
         if ($num_rows > 0) {
             echo 1; // Usuario y contraseña válidos
+            $_SESSION["username"] = $username ;
         } else {
             echo 2; // Usuario o contraseña incorrectos
         }

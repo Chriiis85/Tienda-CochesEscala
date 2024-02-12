@@ -83,7 +83,37 @@
         </article>
     </section>
 
-    <footer></footer>
+<footer>
+    <div class="informacion">
+        <div>
+            <h1>¿Necesitas ayuda?</h1>
+            <p>Estado del pedido.</p>
+            <p>Reclamar pedido.</p>
+        </div>
+        <div class="vertical-bar"></div>
+        <div>            
+            <h1>Suscribete a nuestra Newsletter</h1>
+            <div id="newsletter-social">
+                <div id="newsletter">
+                    <form>
+                        <input type="text" placeholder="Introduce tu Mail">
+                        <input type="submit" value="Enviar">
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="vertical-bar"></div>
+        <div>
+            <h1>Sobre Nosotros</h1>
+            <p>Politicas de Privacidad.</p>
+            <p>Contacta con Nosotros.</p>
+        </div>
+        
+    </div>
+    <div class="derechos">
+        <p>CMODEL SCALE CARS - ALL RIGHTS RESERVED - MADE BY CHRISTIAN MORENO DIAZ</p>
+    </div>
+</footer>
 
 </body>
 
