@@ -89,10 +89,3 @@ document.addEventListener("click", function (event) {
     inputBuscarProducto.value = "";
   }
 });
-
-const inputBuscarProducto = document.getElementById("buscarproducto");
-inputBuscarProducto.on("reset", function () {
-  alert("hola");
-  divResultadoBusqueda.style.display = "none";
-  inputBuscarProducto.value = "";
-});
