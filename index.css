@@ -17,6 +17,7 @@ header {
   justify-content: space-around;
   background-color: #151515;
   border: 1px solid black;
+  border-bottom: 1px solid white;
 }
 
 .title {
@@ -54,8 +55,8 @@ header {
   text-decoration-thickness: auto;
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
   cursor: pointer;
-  user-select: none;
   -webkit-user-select: none;
+  user-select: none;
   touch-action: manipulation;
 }
 
@@ -81,11 +82,14 @@ a:active {
 
 /*BARRA DE BUSQUEDA*/
 .group {
+  width: 500px;
+  height: 200px;
   display: flex;
   line-height: 28px;
   align-items: center;
   position: relative;
-  max-width: 300px;
+  max-width: 500px;
+  margin-left: 70px;
 }
 
 .input {
@@ -138,8 +142,6 @@ input:hover {
 
 .btn-cart::after {
   content: attr(data-quantity);
-  width: fit-content;
-  height: fit-content;
   position: absolute;
   font-size: 15px;
   font-weight: bold;
@@ -183,7 +185,7 @@ input:hover {
 /*CONTENIDO PRINCIPAL*/
 .body {
   margin: 100px;
-  background-color: #151515;;
+  background-color: #151515;
 }
 
 .car-presentation {
@@ -208,7 +210,7 @@ input:hover {
   border: 5px solid black;
 }
 
-/* Zoom In #1 */
+/*ZOOM IN*/
 .image > img {
   -webkit-transform: scale(1);
   transform: scale(1);
@@ -233,8 +235,77 @@ input:hover {
   text-align: center;
 }
 
+/*MOSTRAR PRODUCTOS*/
+.mostrarProd {
+  position: absolute;
+  z-index: 99;
+  top: -3%;
+  left: 51.75%;
+  transform: translate(-50%, -50%);
+  margin-top: 10.2%;
+  width: 500px;
+  height: 120px;
+  color: #919198;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  overflow-y: auto;
+  flex-direction: column;
+  gap: 10px;
+}
+.mostrarProd::-webkit-scrollbar-thumb {
+  background-color: transparent;
+}
+.mostrarProd::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+.mostrarProd::-webkit-scrollbar {
+  background-color: transparent;
+}
+
+.producto {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  text-align: center;
+  justify-content: center;
+  gap: 50px;
+  cursor: pointer;
+  border-radius: 10px;
+  background-color: whitesmoke;
+  color: black;
+  width: 475px;
+  height: 30px;
+  border: 1px solid black;
+  transition: 0.5s;
+  user-select: none;
+}
+
+.producto:hover {
+  box-shadow: 0 2px 3px 0 black;
+  transform: scale(1.01);
+}
+
+.producto2 {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  text-align: center;
+  justify-content: center;
+  gap: 50px;
+  /*cursor: pointer;*/
+  border-radius: 10px;
+  background-color: whitesmoke;
+  color: black;
+  width: 475px;
+  height: 30px;
+  border: 1px solid black;
+  transition: 0.5s;
+}
+
 /*FOOTER*/
-footer{
+footer {
   width: 100%;
   height: 25%;
   background-color: #151515;
@@ -244,7 +315,7 @@ footer{
   flex-direction: column;
 }
 
-.informacion{
+.informacion {
   width: 100%;
   height: 80%;
   display: flex;
@@ -256,7 +327,7 @@ footer{
   color: white;
 }
 
-.derechos{
+.derechos {
   width: 100%;
   height: 20%;
   font-size: 1em;
@@ -268,46 +339,49 @@ footer{
   background-color: #151515;
 }
 
-.vertical-bar{
+.vertical-bar {
   width: 1px;
   height: 70%;
   background-color: white;
 }
-
+.news {
+  margin-top: -20px;
+}
 #newsletter {
-  margin: 30px 0 0 0;
   text-align: center;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: row;
+  margin-top: -20px;
+  margin-bottom: 30px;
 }
 
-input[type=text] {
-    width: 60%;
-    padding: 15px 20px;
-    margin: 8px 0;
-    box-sizing: border-box;
-    border: 1px #D9D6D6;
-    background-color: #F2F2F2;
-    border-radius: 4px;
-    font-size: 13px;
-    font-family: Helvetica, Arial, Sans-Serif;
-    font-weight: 500;
+input[type="text"] {
+  width: 60%;
+  padding: 15px 20px;
+  margin: 8px 0;
+  box-sizing: border-box;
+  border: 1px #d9d6d6;
+  background-color: #f2f2f2;
+  border-radius: 4px;
+  font-size: 13px;
+  font-family: Helvetica, Arial, Sans-Serif;
+  font-weight: 500;
 }
 
-input[type=submit]{
-    width: 100px;
-    height: 45px;
-    text-align: center;  
-    background-color: #0677FF;
-    border: 2px;
-    border-radius: 4px;
-    color: white;
-    text-decoration: none;
-    margin: 4px 2px;
-    cursor: pointer;
-    font-size: 13px;
-    font-family: Helvetica, Arial, Sans-Serif;
-    font-weight: 900;
+input[type="submit"] {
+  width: 100px;
+  height: 45px;
+  text-align: center;
+  background-color: #0677ff;
+  border: 2px;
+  border-radius: 4px;
+  color: white;
+  text-decoration: none;
+  margin: 4px 2px;
+  cursor: pointer;
+  font-size: 13px;
+  font-family: Helvetica, Arial, Sans-Serif;
+  font-weight: 900;
 }
