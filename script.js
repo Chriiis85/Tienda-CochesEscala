@@ -92,6 +92,12 @@ document.addEventListener("click", function (event) {
 });
 
 /*---------------------------------------------------------------FUNCIONALIDAD DEL CARRITO-------------------------------------------------*/
+var carritoCompra = [
+  ["AMR23", "AMR23 - Aston Martin Fernando Alonso", 10, 19.99],
+  ["C42", "C42 - Alfa Romeo Sauber Valtteri Bottas", 10, 19.99],
+  ["W14", "W14 - Mercedes AMG Lewis Hamilton", 10, 19.99],
+];
+
 //TotalProductosPagina y su contador
 let TotalProductosPagina = document.getElementById("TotalProductosPagina");
 let TotalProductosPaginacont = 20;
@@ -104,12 +110,6 @@ let mostrarProductosPedido = document.getElementById("mostrarProductosPedido");
 
 //Article donde se muestra el resumen del Pedido
 let resumenPedido = document.getElementById("resumenPedido");
-
-const carritoCompra = [
-  ["AMR23", "AMR23 - Aston Martin Fernando Alonso", 10, 19.99],
-  ["C42", "C42 - Alfa Romeo Sauber Valtteri Bottas", 10, 19.99],
-  ["W14", "W14 - Mercedes AMG Lewis Hamilton", 10, 19.99],
-];
 
 var dialogo = document.getElementById("dialog");
 var fondoOscuro = document.getElementById("fondoOscuro");
@@ -219,6 +219,7 @@ function pintarProductosCarritoResumen(productos) {
   let botonPedido = document.createElement("button");
   let botonCerrar = document.createElement("button");
   botonPedido.classList.add("botonFin");
+  botonPedido.setAttribute("id", "botonFinPedido");
   botonCerrar.classList.add("botonCerrar");
   botonPedido.textContent = "Finalizar Pedido";
   botonCerrar.textContent = "Cerrar Carrito";
@@ -227,7 +228,24 @@ function pintarProductosCarritoResumen(productos) {
   //Appendchild
   resumenPedido.appendChild(botonPedido);
   resumenPedido.appendChild(botonCerrar);
+
+  //Boton finalizar pedido
+  botonPedido.addEventListener("click", function () {
+    alert("Hola");
+    console.log(carritoCompra);
+    registrarPedido(carritoCompra);
+  });
 }
 
 //Funcion que realiza el pedido y registra
-function registrarPedido() {}
+function registrarPedido(carrito) {
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function () {
+    if (this.readyState == 4 && this.status == 200) {
+      console.log(this.responseText);
+    }
+  };
+  xhttp.open("POST", "realizarPedido.php", true);
+  xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  xhttp.send("carrito=" + carrito);
+}

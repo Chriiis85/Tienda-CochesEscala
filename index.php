@@ -15,11 +15,8 @@
     <div id="dialog">
         <section class="carrito">
             <article id="mostrarProductosPedido" class="productospedido">
-
-
             </article>
             <article id="resumenPedido" class="resumenpedido">
-
             </article>
         </section>
     </div>
