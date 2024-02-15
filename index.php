@@ -15,10 +15,7 @@
     <div id="dialog">
         <section class="carrito">
             <article id="mostrarProductosPedido" class="productospedido">
-                <div class="productostitulo">
-                    <h2>Carrito de la Compra</h2>
-                    <h5 id="TotalProductosCarrito">3 Productos</h5>
-                </div>
+
 
             </article>
             <article id="resumenPedido" class="resumenpedido">

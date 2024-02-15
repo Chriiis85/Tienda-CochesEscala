@@ -126,11 +126,26 @@ function ocultarDialogo() {
   document.getElementsByTagName("body")[0].style.overflow = "auto";
 }
 
-TotalProductosCarrito.textContent = carritoCompra.length + " Productos";
+//TotalProductosCarrito.textContent = carritoCompra.length + " Productos";
 TotalProductosPagina.textContent = TotalProductosPaginacont;
 
 //Funcion que pinta los productos en el carro
 function pintarProductosCarrito(productos) {
+  mostrarProductosPedido.innerHTML = "";
+
+  //Titulo del Carrito
+  let divTitulo = document.createElement("div");
+  let h2Titulo = document.createElement("h2");
+  divTitulo.classList.add("productostitulo");
+  h2Titulo.setAttribute("id", "TotalProductosCarrito");
+  let h5Titulo = document.createElement("h5");
+  h2Titulo.textContent = "Carrito de la Compra";
+  h5Titulo.textContent = productos.length + " Productos";
+  divTitulo.appendChild(h2Titulo);
+  divTitulo.appendChild(h5Titulo);
+  mostrarProductosPedido.appendChild(divTitulo);
+
+  //Mostrar dinamicamente los productos
   for (let i = 0; i < productos.length; i++) {
     //Crear Elementos
     let div = document.createElement("div");
@@ -169,6 +184,7 @@ function pintarProductosCarrito(productos) {
 }
 
 function pintarProductosCarritoResumen(productos) {
+  resumenPedido.innerHTML = "";
   //Mostrar elementos extra en el DOM
   let h1Resumen = document.createElement("h1");
   h1Resumen.textContent = "Resumen del Pedido";
