@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Diálogo con botones</title>
+    <link rel="stylesheet" href="carrito.css" />
+    <script defer src="script.js"></script>
+  </head>
+  <body style="background-color: rgba(0, 0, 0, 0.7)">
+    <button onclick="mostrarDialogo()">Mostrar Diálogo</button>
+
+    <div id="dialog">
+      <section class="carrito">
+        <article class="productospedido">
+          <div class="productostitulo">
+            <h2>Carrito de la Compra</h2>
+            <h5>3 Productos</h5>
+          </div>
+          <hr class="pedidoBarra" />
+          <div class="productocarrito">
+            <img src="Imagenes/AMR23/AMR23-Imagen1.jpg" alt="" />
+            <h3>Nombre del producto</h3>
+            <p>+&nbsp;&nbsp;1&nbsp;&nbsp;-</p>
+            <h3>Precio</h3>
+            <p>X</p>
+          </div>
+          <hr style="color: black; width: 90%" />
+          <div class="productocarrito">
+            <img src="Imagenes/AMR23/AMR23-Imagen1.jpg" alt="" />
+            <h3>Nombre del producto</h3>
+            <p>+&nbsp;&nbsp;1&nbsp;&nbsp;-</p>
+            <h3>Precio</h3>
+            <p>X</p>
+          </div>
+          <hr style="color: black; width: 90%" />
+          <div class="productocarrito">
+            <img src="Imagenes/AMR23/AMR23-Imagen1.jpg" alt="" />
+            <h3>Nombre del producto</h3>
+            <p>+&nbsp;&nbsp;1&nbsp;&nbsp;-</p>
+            <h3>Precio</h3>
+            <p>X</p>
+          </div>
+          <hr style="color: black; width: 90%" />
+          <div class="productocarrito">
+            <img src="Imagenes/AMR23/AMR23-Imagen1.jpg" alt="" />
+            <h3>Nombre del producto</h3>
+            <p>+&nbsp;&nbsp;1&nbsp;&nbsp;-</p>
+            <h3>Precio</h3>
+            <p>X</p>
+          </div>
+        </article>
+        <article class="resumenpedido">
+          <h1>Resumen del Pedido</h1>
+          <div class="pedidoBarra"></div>
+          <h3>Productos 5</h3>
+          <div class="resumenpedidoProductos">
+            <p>Hola ejemplo de producto 1 &nbsp;&nbsp; X5</p>
+            <p>Hola ejemplo de producto 1 &nbsp;&nbsp; X5</p>
+            <p>Hola ejemplo de producto 1 &nbsp;&nbsp; X5</p>
+            <p>Hola ejemplo de producto 1 &nbsp;&nbsp; X5</p>
+          </div>
+          <div class="pedidoBarra"></div>
+          <h3>
+            Precio
+            Total&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;33,33€
+          </h3>
+          <button onclick="ocultarDialogo()" class="botonCerrar">
+            Cerrar Cesta
+          </button>
+          <button onclick="ocultarDialogo()" class="botonFin">
+            Finalizar Pedido
+          </button>
+        </article>
+      </section>
+    </div>
+
+    <script></script>
+  </body>
+</html>

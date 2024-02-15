@@ -6,11 +6,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Main Page - CModels Scale</title>
     <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="carrito.css">
     <script defer src="script.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 
 <body>
+    <div id="dialog">
+        <section class="carrito">
+            <article id="mostrarProductosPedido" class="productospedido">
+                <div class="productostitulo">
+                    <h2>Carrito de la Compra</h2>
+                    <h5 id="TotalProductosCarrito">3 Productos</h5>
+                </div>
+
+            </article>
+            <article id="resumenPedido" class="resumenpedido">
+
+            </article>
+        </section>
+    </div>
+
+
     <div id="contenedor-producto">
     </div>
     <header>
@@ -30,9 +47,9 @@
         <section class="botones">
             <button class="buttonlogin" role="button"><a href="login.php">Iniciar Sesión</a></button>
             <button class="buttonlogin" role="button">Crear Cuenta</button>
-            <button class="cart">
+            <button onclick="mostrarDialogo()" class="cart">
                 <img src="Imagenes/carrito.png" alt="">
-                <span class="count" id="unidadcarrito">0</span>
+                <span class="count" id="TotalProductosPagina">0</span>
             </button>
             </div>
 
