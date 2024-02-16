@@ -1,4 +1,26 @@
 /*----------------------------------------------------------FUNCIONALIDAD PAGINA PRINCIPAL-------------------------------------------------*/
+let carritoCompra = [
+  ["AMR23", "AMR23 - Aston Martin Fernando Alonso", 10, 19.99],
+  ["C42", "C42 - Alfa Romeo Sauber Valtteri Bottas", 10, 19.99],
+  ["W14", "W14 - Mercedes AMG Lewis Hamilton", 10, 19.99],
+];
+/*function realizarPedido(carritoCompra) {
+
+}*/
+
+/*document.getElementById("sendArray").addEventListener("click", function () {
+  var arrayData = [1, 2, 3, 4, 5]; // Array de ejemplo
+  var xhr = new XMLHttpRequest();
+  xhr.open("POST", "procesar.php", true);
+  xhr.setRequestHeader("Content-Type", "application/json");
+  xhr.onreadystatechange = function () {
+    if (xhr.readyState == 4 && xhr.status == 200) {
+      alert(xhr.responseText);
+    }
+  };
+  xhr.send(JSON.stringify({ arrayData: arrayData }));
+});*/
+
 /*Funcion que al cargar la aplicacion detecta cada input de las teclas, recoje la palabra y el valor escrito en el campo y lo manda
 a la funcion buscar producto para mostrar los productos*/
 window.onload = function () {
@@ -10,7 +32,7 @@ window.onload = function () {
 };
 
 /*Funcion que se le pasa una palabra por parametro y mediante ajax realiza una conexion a la BBDD y buscar la palabra(producto) a mostrar*/
-function buscarProducto(letra) {
+/*function buscarProducto(letra) {
   var xhttp = new XMLHttpRequest();
   xhttp.onreadystatechange = function () {
     if (this.readyState == 4 && this.status == 200) {
@@ -23,9 +45,9 @@ function buscarProducto(letra) {
   xhttp.open("POST", "buscar_producto.php", true);
   xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
   xhttp.send("letra=" + letra);
-}
+}*/
 
-/*Funcion encargada de pintar y mostrar en el DOM los productos que se devuelven*/
+/*Funcion encargada de pintar y mostrar en el DOM los productos que se devuelven para el search*/
 function mostrarProductos(productos) {
   let contenedormostrarProductos = document.getElementById(
     "contenedor-producto"
@@ -92,15 +114,10 @@ document.addEventListener("click", function (event) {
 });
 
 /*---------------------------------------------------------------FUNCIONALIDAD DEL CARRITO-------------------------------------------------*/
-var carritoCompra = [
-  ["AMR23", "AMR23 - Aston Martin Fernando Alonso", 10, 19.99],
-  ["C42", "C42 - Alfa Romeo Sauber Valtteri Bottas", 10, 19.99],
-  ["W14", "W14 - Mercedes AMG Lewis Hamilton", 10, 19.99],
-];
 
 //TotalProductosPagina y su contador
 let TotalProductosPagina = document.getElementById("TotalProductosPagina");
-let TotalProductosPaginacont = 20;
+let TotalProductosPaginacont = carritoCompra.length;
 
 //TotalProductosCarrito
 let TotalProductosCarrito = document.getElementById("TotalProductosCarrito");
@@ -228,24 +245,18 @@ function pintarProductosCarritoResumen(productos) {
   //Appendchild
   resumenPedido.appendChild(botonPedido);
   resumenPedido.appendChild(botonCerrar);
-
   //Boton finalizar pedido
   botonPedido.addEventListener("click", function () {
-    alert("Hola");
-    console.log(carritoCompra);
-    registrarPedido(carritoCompra);
+    console.log("Botón de pedido clicado");
+    console.log("carritoCompra:", carritoCompra);
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "realizarPedido.php", true);
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.onreadystatechange = function () {
+      if (xhr.readyState == 4 && xhr.status == 200) {
+        alert(xhr.responseText);
+      }
+    };
+    xhr.send(JSON.stringify({ carritoCompra: carritoCompra }));
   });
-}
-
-//Funcion que realiza el pedido y registra
-function registrarPedido(carrito) {
-  var xhttp = new XMLHttpRequest();
-  xhttp.onreadystatechange = function () {
-    if (this.readyState == 4 && this.status == 200) {
-      console.log(this.responseText);
-    }
-  };
-  xhttp.open("POST", "realizarPedido.php", true);
-  xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-  xhttp.send("carrito=" + carrito);
 }

@@ -1,5 +1,4 @@
 <?php
-session_start();
 // Recibimos los datos del formulario desde el AJAX
 $username = $_POST['username'];
 $password = $_POST['password'];
