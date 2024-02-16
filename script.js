@@ -1,26 +1,4 @@
 /*----------------------------------------------------------FUNCIONALIDAD PAGINA PRINCIPAL-------------------------------------------------*/
-let carritoCompra = [
-  ["AMR23", "AMR23 - Aston Martin Fernando Alonso", 10, 19.99],
-  ["C42", "C42 - Alfa Romeo Sauber Valtteri Bottas", 10, 19.99],
-  ["W14", "W14 - Mercedes AMG Lewis Hamilton", 10, 19.99],
-];
-/*function realizarPedido(carritoCompra) {
-
-}*/
-
-/*document.getElementById("sendArray").addEventListener("click", function () {
-  var arrayData = [1, 2, 3, 4, 5]; // Array de ejemplo
-  var xhr = new XMLHttpRequest();
-  xhr.open("POST", "procesar.php", true);
-  xhr.setRequestHeader("Content-Type", "application/json");
-  xhr.onreadystatechange = function () {
-    if (xhr.readyState == 4 && xhr.status == 200) {
-      alert(xhr.responseText);
-    }
-  };
-  xhr.send(JSON.stringify({ arrayData: arrayData }));
-});*/
-
 /*Funcion que al cargar la aplicacion detecta cada input de las teclas, recoje la palabra y el valor escrito en el campo y lo manda
 a la funcion buscar producto para mostrar los productos*/
 window.onload = function () {
@@ -32,7 +10,7 @@ window.onload = function () {
 };
 
 /*Funcion que se le pasa una palabra por parametro y mediante ajax realiza una conexion a la BBDD y buscar la palabra(producto) a mostrar*/
-/*function buscarProducto(letra) {
+function buscarProducto(letra) {
   var xhttp = new XMLHttpRequest();
   xhttp.onreadystatechange = function () {
     if (this.readyState == 4 && this.status == 200) {
@@ -45,9 +23,9 @@ window.onload = function () {
   xhttp.open("POST", "buscar_producto.php", true);
   xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
   xhttp.send("letra=" + letra);
-}*/
+}
 
-/*Funcion encargada de pintar y mostrar en el DOM los productos que se devuelven para el search*/
+/*Funcion encargada de pintar y mostrar en el DOM los productos que se devuelven*/
 function mostrarProductos(productos) {
   let contenedormostrarProductos = document.getElementById(
     "contenedor-producto"
@@ -89,7 +67,7 @@ function mostrarProductos(productos) {
     let cajasproductos = document.querySelectorAll(".producto");
     for (const producto of cajasproductos) {
       producto.addEventListener("click", function () {
-        alert(producto.textContent);
+        alert("Aqui:" + producto.textContent);
       });
     }
   }
@@ -114,7 +92,11 @@ document.addEventListener("click", function (event) {
 });
 
 /*---------------------------------------------------------------FUNCIONALIDAD DEL CARRITO-------------------------------------------------*/
-
+const carritoCompra = [
+  ["AMR23", "AMR23 - Aston Martin Fernando Alonso", 10, 19.99],
+  ["C42", "C42 - Alfa Romeo Sauber Valtteri Bottas", 10, 19.99],
+  ["W14", "W14 - Mercedes AMG Lewis Hamilton", 10, 19.99],
+];
 //TotalProductosPagina y su contador
 let TotalProductosPagina = document.getElementById("TotalProductosPagina");
 let TotalProductosPaginacont = carritoCompra.length;
@@ -127,6 +109,10 @@ let mostrarProductosPedido = document.getElementById("mostrarProductosPedido");
 
 //Article donde se muestra el resumen del Pedido
 let resumenPedido = document.getElementById("resumenPedido");
+
+document.getElementsByTagName("body")[0].style.overflowX = "hidden";
+
+document.getElementsByTagName("body")[0].style.overflow = "auto";
 
 var dialogo = document.getElementById("dialog");
 var fondoOscuro = document.getElementById("fondoOscuro");
@@ -171,10 +157,11 @@ function pintarProductosCarrito(productos) {
     let h3Nombre = document.createElement("h3");
     let pUnidad = document.createElement("p");
     let h3Precio = document.createElement("h3");
-    let pEquis = document.createElement("p");
+    let equis = document.createElement("button");
     //Añadir Clases
     div.classList.add("productocarrito");
     hr.classList.add("pedidoBarra");
+
     img.src =
       "Imagenes/" + productos[i][0] + "/" + productos[i][0] + "-Imagen1.jpg";
 
@@ -182,14 +169,14 @@ function pintarProductosCarrito(productos) {
     h3Nombre.textContent = productos[i][1];
     pUnidad.textContent = productos[i][2];
     h3Precio.textContent = productos[i][3] + "€";
-    pEquis.textContent = "X";
+    equis.textContent = "X";
 
     //Añadir elementos al div
     div.appendChild(img);
     div.appendChild(h3Nombre);
     div.appendChild(pUnidad);
     div.appendChild(h3Precio);
-    div.appendChild(pEquis);
+    div.appendChild(equis);
     //Añadir elementos al DOM
     mostrarProductosPedido.appendChild(hr);
     mostrarProductosPedido.appendChild(div);
@@ -236,27 +223,133 @@ function pintarProductosCarritoResumen(productos) {
   let botonPedido = document.createElement("button");
   let botonCerrar = document.createElement("button");
   botonPedido.classList.add("botonFin");
-  botonPedido.setAttribute("id", "botonFinPedido");
   botonCerrar.classList.add("botonCerrar");
   botonPedido.textContent = "Finalizar Pedido";
   botonCerrar.textContent = "Cerrar Carrito";
-  //botonPedido.onclick = miFuncion;
   botonCerrar.onclick = ocultarDialogo;
+
+  //Evenet Listener para registrar un Pedido
+  botonPedido.addEventListener("click", function () {
+    alert("HOLA");
+    registrarPedido(carritoCompra);
+    alert(carritoCompra);
+  });
   //Appendchild
   resumenPedido.appendChild(botonPedido);
   resumenPedido.appendChild(botonCerrar);
-  //Boton finalizar pedido
-  botonPedido.addEventListener("click", function () {
-    console.log("Botón de pedido clicado");
-    console.log("carritoCompra:", carritoCompra);
-    var xhr = new XMLHttpRequest();
-    xhr.open("POST", "realizarPedido.php", true);
-    xhr.setRequestHeader("Content-Type", "application/json");
-    xhr.onreadystatechange = function () {
-      if (xhr.readyState == 4 && xhr.status == 200) {
-        alert(xhr.responseText);
-      }
-    };
-    xhr.send(JSON.stringify({ carritoCompra: carritoCompra }));
+}
+
+//Funcion que realiza el pedido y registra
+function registrarPedido(carritoCompra) {
+  console.log("Botón de pedido clicado");
+  console.log("carritoCompra:", carritoCompra);
+  var xhr = new XMLHttpRequest();
+  xhr.open("POST", "realizarPedido.php", true);
+  xhr.setRequestHeader("Content-Type", "application/json");
+  xhr.onreadystatechange = function () {
+    if (xhr.readyState == 4 && xhr.status == 200) {
+      alert(xhr.responseText);
+    }
+  };
+  xhr.send(JSON.stringify({ carritoCompra: carritoCompra }));
+}
+
+/*PINTA LAS UNIDADES DISPONIBLES EN LOS INPUT NUMBER PARA CONTROLAR LOS VALORES*/
+function returnUnidadProd(producto, callback) {
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function () {
+    if (this.readyState == 4 && this.status == 200) {
+      let unidadDisponible = parseInt(this.responseText);
+      callback(unidadDisponible);
+    }
+  };
+  xhttp.open("POST", "consultarUnidades.php", true);
+  xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  xhttp.send("nombreProd=" + producto);
+}
+
+/*for (let i = 0; i < carritoCompra.length; i++) {
+  returnUnidadProd(carritoCompra[i][1], function (unidades) {
+    // Aquí puedes realizar acciones con las unidades obtenidas, como mostrar un mensaje de alerta
+    //unidades
+    var unidadesProductoInput = document.getElementById(
+      "unidadesProducto" + carritoCompra[i][0]
+    );
+    unidadesProductoInput.max = unidades;
   });
+}*/
+
+/*------------------------------------------------FUNCIONALIDAD PRODUCTOS PAGINA PRINCIPAL-------------------------------------------------------*/
+
+let botonesCompra = document.querySelectorAll(".botonCompra");
+for (const botonCompra of botonesCompra) {
+  botonCompra.addEventListener("click", function () {
+    let idBoton = botonCompra.id;
+
+    let nombreProdCorto = idBoton.split("-");
+    nombreProdCorto = nombreProdCorto[1];
+
+    let nombreProdLargo = document.getElementById(
+      "tituloProd" + nombreProdCorto
+    ).textContent;
+
+    let precioProd = document.getElementById(
+      "precio" + nombreProdCorto
+    ).textContent;
+
+    let indiceInicialPrecio = precioProd.indexOf(" ");
+    let indiceFinalPrecio = precioProd.indexOf("P", indiceInicialPrecio);
+    let precio = precioProd.substring(
+      indiceInicialPrecio + 1,
+      indiceFinalPrecio
+    );
+
+    alert(precio);
+
+    let unidades = document.getElementById(
+      "unidadesProducto" + nombreProdCorto
+    ).value;
+
+    carritoCompra.push([nombreProdCorto, nombreProdLargo, unidades, precio]);
+
+    actualizarNumeroCarrito();
+    mostrarDialogo();
+  });
+}
+
+let botonesCesta = document.querySelectorAll(".botonCesta");
+for (const botonCesta of botonesCesta) {
+  botonCesta.addEventListener("click", function () {
+    let idBoton = botonCesta.id;
+
+    let nombreProdCorto = idBoton.split("-");
+    nombreProdCorto = nombreProdCorto[1];
+
+    let nombreProdLargo = document.getElementById(
+      "tituloProd" + nombreProdCorto
+    ).textContent;
+
+    let precioProd = document.getElementById(
+      "precio" + nombreProdCorto
+    ).textContent;
+
+    let unidades = document.getElementById(
+      "unidadesProducto" + nombreProdCorto
+    ).value;
+
+    carritoCompra.push([
+      nombreProdCorto,
+      nombreProdLargo,
+      unidades,
+      precioProd,
+    ]);
+
+    actualizarNumeroCarrito();
+  });
+}
+
+//Actualiza el numero de los articulos en todos los sitios
+function actualizarNumeroCarrito() {
+  TotalProductosPaginacont++;
+  TotalProductosPagina.textContent = TotalProductosPaginacont;
 }

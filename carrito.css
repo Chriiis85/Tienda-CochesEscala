@@ -105,6 +105,15 @@ dialog::backdrop {
   height: 125px;
 }
 
+.xcarr {
+  font-size: 8em;
+  font-weight: bold;
+}
+
+.xcarr:hover {
+  transform: scale(1.3);
+}
+
 .barraProducto {
   color: black;
   width: 90%;
@@ -192,3 +201,5 @@ dialog::backdrop {
   border-color: rgba(255, 255, 255, 0.7);
   box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.3);
 }
+
+/*ELIMINAR BOTON DE LA CESTA */

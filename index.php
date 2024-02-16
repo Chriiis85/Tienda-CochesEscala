@@ -9,9 +9,29 @@
     <link rel="stylesheet" href="carrito.css">
     <script defer src="script.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 </head>
+<?php
+// Verificar si los datos son correctos en la BBDD
+$con = mysqli_connect("localhost", "root", "", "tienda");
+if (!$con->connect_error) {
+    // Consulta: SELECT nombre_producto FROM productos WHERE nombre_producto LIKE '%A%';
+    $consulta = "SELECT * FROM productos";
+    $result = mysqli_query($con, $consulta);
+    if ($result) {
+        // Obtener todos los resultados
+        $productos = mysqli_fetch_all($result);
+        // Devolver los resultados en formato JSON
+        //echo json_encode($productos); 
+    } else {
+        echo "Error en la consulta: " . mysqli_error($con);
+    }
+    // Cerrar la conexión
+    mysqli_close($con);
+} else {
+    die("Error de conexión: " . mysqli_connect_error());
+}
+?>
 
 <body>
     <div id="dialog">
@@ -53,81 +73,40 @@
     </header>
 
     <section class="body">
+        <?php
+        for ($i = 0; $i < 9; $i++) {
+            //Separar cadena para poder poner imagen
+            $nombreProdCorto = strstr($productos[$i][1], ' ', true); // Obtener la parte de la cadena hasta el primer espacio
+            echo $nombreProdCorto;
 
-        <article class="car-presentation">
-            <div class="image">
-                <img src="Imagenes/AMR23/AMR23-Imagen1.jpg" alt="Imagen coche AMR23 Fernando Alonso">
-            </div>
-            <div class="description">
-                <h1>AMR23 - Aston Martin Fernando Alonso</h1>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime, sint praesentium fuga impedit nisi
+            echo '<article class="car-presentation">';
+            echo '<div class="image">';
+            echo '<img src="Imagenes/' . $nombreProdCorto . '/' . $nombreProdCorto . '-Imagen1.jpg" alt="Imagen coche ' . $productos[$i][1] . '">';
+            echo '</div>';
+            echo '<div class="description">';
+            echo '<h1 id="tituloProd' . $nombreProdCorto . '">' . $productos[$i][1] . '</h1>';
+            echo '<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime, sint praesentium fuga impedit nisi
                     reiciendis similique nobis ad, ipsam omnis quos accusamus soluta velit aut reprehenderit repellat.
-                    Laboriosam, sunt dolorem.</p>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime, sint praesentium fuga impedit nisi
+                    Laboriosam, sunt dolorem.</p>';
+            echo '<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime, sint praesentium fuga impedit nisi
                     reiciendis similique nobis ad, ipsam omnis quos accusamus soluta velit aut reprehenderit repellat.
-                    Laboriosam, sunt dolorem.</p>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime, sint praesentium fuga impedit nisi
+                    Laboriosam, sunt dolorem.</p>';
+            echo '<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime, sint praesentium fuga impedit nisi
                     reiciendis similique nobis ad, ipsam omnis quos accusamus soluta velit aut reprehenderit repellat.
-                    Laboriosam, sunt dolorem.</p>
-                <h2>Precio: 19,99€ P.V.P</h2>
-                <div class="botonesProducto">
-                    <button class="botonCompra">Comprar Producto</button>
-                    <button class="botonCesta">Añadir a la Cesta</button>
-                    <h1>Unidades:</h1>
-                    <input class="unidadArticulo" type="number" name="" id="unidadesProducto">
-                </div>
-            </div>
-        </article>
-        <hr>
-        <article class="car-presentation">
-            <div class="description">
-                <h1>C42 - Alfa Romeo Sauber Valtteri Bottas</h1>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime, sint praesentium fuga impedit nisi
-                    reiciendis similique nobis ad, ipsam omnis quos accusamus soluta velit aut reprehenderit repellat.
-                    Laboriosam, sunt dolorem.</p>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime, sint praesentium fuga impedit nisi
-                    reiciendis similique nobis ad, ipsam omnis quos accusamus soluta velit aut reprehenderit repellat.
-                    Laboriosam, sunt dolorem.</p>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime, sint praesentium fuga impedit nisi
-                    reiciendis similique nobis ad, ipsam omnis quos accusamus soluta velit aut reprehenderit repellat.
-                    Laboriosam, sunt dolorem.</p>
-                <h2>Precio: 19,99€ P.V.P</h2>
-                <div class="botonesProducto">
-                    <button class="botonCompra">Comprar Producto</button>
-                    <button class="botonCesta">Añadir a la Cesta</button>
-                    <h1>Unidades:</h1>
-                    <input class="unidadArticulo" type="number" name="" id="unidadesProducto">
-                </div>
-            </div>
-            <div class="image">
-                <img src="Imagenes/C42/C42-Imagen1.jpg" alt="Imagen coche C42 Valtteri Bottas">
-            </div>
-        </article>
-        <hr>
-        <article class="car-presentation">
-            <div class="image">
-                <img src="Imagenes/W14/W14-imagen1.jpg" alt="Imagen coche W14 - Mercedes AMG Lewis Hamilton">
-            </div>
-            <div class="description">
-                <h1>W14 - Mercedes AMG Lewis Hamilton</h1>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime, sint praesentium fuga impedit nisi
-                    reiciendis similique nobis ad, ipsam omnis quos accusamus soluta velit aut reprehenderit repellat.
-                    Laboriosam, sunt dolorem.</p>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime, sint praesentium fuga impedit nisi
-                    reiciendis similique nobis ad, ipsam omnis quos accusamus soluta velit aut reprehenderit repellat.
-                    Laboriosam, sunt dolorem.</p>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime, sint praesentium fuga impedit nisi
-                    reiciendis similique nobis ad, ipsam omnis quos accusamus soluta velit aut reprehenderit repellat.
-                    Laboriosam, sunt dolorem.</p>
-                <h2>Precio: 19,99€ P.V.P</h2>
-                <div class="botonesProducto">
-                    <button class="botonCompra">Comprar Producto</button>
-                    <button class="botonCesta">Añadir a la Cesta</button>
-                    <h1>Unidades:</h1>
-                    <input class="unidadArticulo" type="number" name="" id="unidadesProducto">
-                </div>
-            </div>
-        </article>
+                    Laboriosam, sunt dolorem.</p>';
+            echo '<h2 id="precio' . $nombreProdCorto . '">Precio: ' . $productos[$i][2] . '€ P.V.P</h2>';
+            echo '<div class="botonesProducto">';
+            echo '<button id="comprarProducto-' . $nombreProdCorto . '" class="botonCompra">Comprar Producto</button>';
+            echo '<button id="cestaProducto-' . $nombreProdCorto . '" class="botonCesta">Añadir a la Cesta</button>';
+            echo '<h1>Unidades:</h1>';
+            echo '<input class="unidadArticulo" type="number" name="" id="unidadesProducto' . $nombreProdCorto . '" min="1" value="1">';
+            echo '</div>';
+            echo '</div>';
+            echo '</article>';
+            echo '<hr>';
+        }
+        ?>
+
     </section>
 
     <footer>
@@ -162,5 +141,20 @@
         </div>
     </footer>
 </body>
+
+<script>
+    function recogerProducto() {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                let producto = JSON.parse(this.response);
+            }
+        };
+        xhttp.open("POST", "recogerProductos.php", true);
+        xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xhttp.send();
+    }
+    recogerProducto();
+</script>
 
 </html>

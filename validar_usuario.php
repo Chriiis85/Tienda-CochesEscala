@@ -23,6 +23,9 @@ if (!$con->connect_error) {
         } else {
             echo 2; // Usuario o contraseña incorrectos
         }
+
+        // Cerrar la conexión
+        mysqli_close($con);
     } else {
         echo "Error en la consulta: " . mysqli_error($con);
     }

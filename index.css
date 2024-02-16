@@ -5,9 +5,9 @@ body {
   width: 100vw;
   height: 100vh;
   font-family: "Bebas Neue", sans-serif;
-  overflow-y: hidden;
   background-color: transparent;
   user-select: none;
+  overflow-x: hidden;
 }
 
 header {
@@ -233,6 +233,9 @@ input:hover {
   box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.3);
 }
 
+.xcarr {
+  font-size: 1em;
+}
 /*CONTENIDO PRINCIPAL*/
 .body {
   margin: 100px;
@@ -362,7 +365,7 @@ input:hover {
   position: absolute;
   z-index: 99;
   top: -3%;
-  left: 53.75%;
+  left: 53%;
   transform: translate(-50%, -50%);
   margin-top: 10.2%;
   width: 500px;

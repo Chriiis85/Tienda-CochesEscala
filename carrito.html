@@ -6,7 +6,9 @@
     <title>Diálogo con botones</title>
     <link rel="stylesheet" href="carrito.css" />
     <script defer src="script.js"></script>
+    <script src="jquery-3.7.1.min.js"></script>
   </head>
+
   <body style="background-color: rgba(0, 0, 0, 0.7)">
     <button onclick="mostrarDialogo()">Mostrar Diálogo</button>
 
@@ -45,9 +47,26 @@
           <div class="productocarrito">
             <img src="Imagenes/AMR23/AMR23-Imagen1.jpg" alt="" />
             <h3>Nombre del producto</h3>
-            <p>+&nbsp;&nbsp;1&nbsp;&nbsp;-</p>
+            <div class="quantity">
+              <input type="number" min="1" max="9" step="1" value="1" />
+            </div>
             <h3>Precio</h3>
-            <p>X</p>
+            <label class="number-input">
+              <button
+                onclick="this.parentNode.querySelector('input[type=number]').stepDown()"
+              ></button>
+              <input
+                class="quantity"
+                min="0"
+                name="quantity"
+                value="1"
+                type="number"
+              />
+              <button
+                onclick="this.parentNode.querySelector('input[type=number]').stepUp()"
+                class="plus"
+              ></button>
+            </label>
           </div>
         </article>
         <article class="resumenpedido">
@@ -75,6 +94,58 @@
       </section>
     </div>
 
-    <script></script>
+    <script>
+      $(document).ready(function () {
+        $('input[type="number"]').each(function () {
+          $(this).wrap('<div class="quantity"></div>');
+        });
+        const arrow_up =
+            '<svg width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 5L5 1L9 5" stroke="#333333" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+          arrow_down =
+            '<svg width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 1L5 5L1 1" stroke="#333333" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+
+        $(
+          '<div class="quantity-nav"><button class="quantity-button quantity-up">' +
+            arrow_up +
+            '</button><button class="quantity-button quantity-down">' +
+            arrow_down +
+            "</button></div>"
+        ).insertAfter(".quantity input");
+
+        $(".quantity").each(function () {
+          const spinner = $(this),
+            input = spinner.find('input[type="number"]'),
+            btnUp = spinner.find(".quantity-up"),
+            btnDown = spinner.find(".quantity-down"),
+            min = input.attr("min") ? parseFloat(input.attr("min")) : -Infinity,
+            max = input.attr("max") ? parseFloat(input.attr("max")) : Infinity,
+            step = input.attr("step") ? parseFloat(input.attr("step")) : 1;
+
+          btnUp.click(function () {
+            const oldValue = input.val() ? parseFloat(input.val()) : 0;
+            let newVal;
+            if (oldValue >= max) {
+              newVal = oldValue;
+            } else {
+              newVal = oldValue + step;
+            }
+            spinner.find("input").val(newVal);
+            spinner.find("input").trigger("change");
+          });
+
+          btnDown.click(function () {
+            const oldValue = input.val() ? parseFloat(input.val()) : 0;
+            let newVal;
+            if (oldValue <= min) {
+              newVal = oldValue;
+            } else {
+              newVal = oldValue - step;
+            }
+            spinner.find("input").val(newVal);
+            spinner.find("input").trigger("change");
+          });
+        });
+      });
+    </script>
   </body>
 </html>
