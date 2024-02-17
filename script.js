@@ -268,16 +268,23 @@ function returnUnidadProd(producto, callback) {
   xhttp.send("nombreProd=" + producto);
 }
 
-/*for (let i = 0; i < carritoCompra.length; i++) {
-  returnUnidadProd(carritoCompra[i][1], function (unidades) {
-    // Aquí puedes realizar acciones con las unidades obtenidas, como mostrar un mensaje de alerta
-    //unidades
-    var unidadesProductoInput = document.getElementById(
-      "unidadesProducto" + carritoCompra[i][0]
-    );
-    unidadesProductoInput.max = unidades;
+//FUNCION QUE AL CARGAR LA PAGINA PONE EL MAXIMO DE UNIDADES A COMPRAR
+let inputsUnidadesProducto = document.querySelectorAll(".unidadArticulo");
+for (const input of inputsUnidadesProducto) {
+  let idinputProd = input.id;
+  let corteIni = idinputProd.lastIndexOf("o");
+  let nombreProd = idinputProd.substring(corteIni + 1, idinputProd.length);
+  let nombreProdLargo = document.getElementById(
+    "tituloProd" + nombreProd
+  ).textContent;
+  //for (let i = 0; i < inputsUnidadesProducto.length; i++) {
+  returnUnidadProd(nombreProdLargo, function (unidades) {
+    let inputSetMax = document.getElementById("unidadesProducto" + nombreProd);
+    inputSetMax.max = unidades;
   });
-}*/
+
+  //}
+}
 
 /*------------------------------------------------FUNCIONALIDAD PRODUCTOS PAGINA PRINCIPAL-------------------------------------------------------*/
 
@@ -303,8 +310,6 @@ for (const botonCompra of botonesCompra) {
       indiceInicialPrecio + 1,
       indiceFinalPrecio
     );
-
-    alert(precio);
 
     let unidades = document.getElementById(
       "unidadesProducto" + nombreProdCorto
@@ -336,6 +341,10 @@ for (const botonCesta of botonesCesta) {
     let unidades = document.getElementById(
       "unidadesProducto" + nombreProdCorto
     ).value;
+
+    alert(
+      "Se añadio a la cesta: " + nombreProdLargo + " - " + unidades + "Unidades"
+    );
 
     carritoCompra.push([
       nombreProdCorto,

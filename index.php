@@ -74,7 +74,7 @@ if (!$con->connect_error) {
 
     <section class="body">
         <?php
-        for ($i = 0; $i < 9; $i++) {
+        for ($i = 0; $i < 8; $i++) {
             //Separar cadena para poder poner imagen
             $nombreProdCorto = strstr($productos[$i][1], ' ', true); // Obtener la parte de la cadena hasta el primer espacio
             echo $nombreProdCorto;
