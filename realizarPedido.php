@@ -10,14 +10,16 @@ if ($jsonData !== null && isset($jsonData['carritoCompra'])) {
     // Imprimir los datos recibidos para verificar si se recibieron correctamente
     //print_r($carritoCompra);
 
+    $ultimoId = recogerUltimoID();
     //Bucle que recorrer el array y va insertando los productos
     for ($i = 0; $i < sizeof($carritoCompra); $i++) {
         //Recibe el nombre del Producto y guarda su ID para insertar el Pedido, tambien la cantidad y el id del usuario.
         $idProducto = devovlerNombreProducto($carritoCompra[$i][1]);
         $cantidad = $carritoCompra[$i][2];
         $idUsuario = 1;
+
         //Llama a la funcion de registrar Pedido con los datos proporcionados
-        registrarPedido($idUsuario, $idProducto, $cantidad);
+        registrarPedido($ultimoId + 1, $idUsuario, $idProducto, $cantidad);
     }
 
 } else {
@@ -41,18 +43,18 @@ function devovlerNombreProducto($nombreProd)
 }
 
 //Funcion que registra el pedido con los datos proporcionados por parametro
-function registrarPedido($idUsuario, $idProducto, $cantidad)
+function registrarPedido($id, $idUsuario, $idProducto, $cantidad)
 {
     //CONEXION CON LA BD
     $con = mysqli_connect("localhost", "root", "", "tienda");
     //CONSULTA INSERT INTO `pedidos`(`id_usuario`, `id_producto`, `cantidad`,) VALUES ()
-    $consulta = 'INSERT INTO `pedidos`(`id_usuario`, `id_producto`, `cantidad`) VALUES (?, ?, ?)';
+    $consulta = 'INSERT INTO `pedidos`(`id_pedido`,`id_usuario`, `id_producto`, `cantidad`) VALUES (?, ?, ?, ?)';
     $stmt = mysqli_prepare($con, $consulta);
 
     // Verificar si la preparación de la consulta fue exitosa
     if ($stmt) {
         // Unir los parámetros con la declaración de la consulta
-        mysqli_stmt_bind_param($stmt, 'iii', $idUsuario, $idProducto, $cantidad);
+        mysqli_stmt_bind_param($stmt, 'iiii', $id, $idUsuario, $idProducto, $cantidad);
 
         // Ejecutar la consulta preparada
         mysqli_stmt_execute($stmt);
@@ -74,9 +76,31 @@ function registrarPedido($idUsuario, $idProducto, $cantidad)
     mysqli_close($con);
 }
 
+//FUNCION QUE RECOGE EL ULTIMO ID PARA PONER UN ID DE PEDIDO
 function recogerUltimoID()
 {
+    //CONSULTA SELECT MAX(id) FROM pedidos;
+    //CONEXION CON LA BD
+    $con = mysqli_connect("localhost", "root", "", "tienda");
 
+    //CONSULTA PREPARADA
+    $consulta = 'SELECT MAX(id_pedido) FROM pedidos';
+    $stmt = mysqli_prepare($con, $consulta);
+
+    // Enlazar parámetros y ejecutar la consulta
+    mysqli_stmt_execute($stmt);
+
+    // Obtener resultados
+    mysqli_stmt_bind_result($stmt, $id);
+    mysqli_stmt_fetch($stmt);
+
+    // Cerrar la consulta preparada
+    mysqli_stmt_close($stmt);
+
+    // Cerrar la conexión
+    mysqli_close($con);
+
+    return $id;
 }
 
 /*function consultarCantidadDisponible($nombre_producto)
@@ -103,5 +127,5 @@ function recogerUltimoID()
     mysqli_close($con);
 
     return $unidades;
-}/
+}*/
 ?>

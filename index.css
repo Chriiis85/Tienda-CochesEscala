@@ -347,6 +347,7 @@ input:hover {
   width: 30px;
   color: rgb(36, 35, 42);
   font-size: 16px;
+  text-align: left;
   line-height: 20px;
   min-height: 25px;
   border-radius: 4px;

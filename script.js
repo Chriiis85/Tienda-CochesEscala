@@ -92,11 +92,7 @@ document.addEventListener("click", function (event) {
 });
 
 /*---------------------------------------------------------------FUNCIONALIDAD DEL CARRITO-------------------------------------------------*/
-const carritoCompra = [
-  ["AMR23", "AMR23 - Aston Martin Fernando Alonso", 10, 19.99],
-  ["C42", "C42 - Alfa Romeo Sauber Valtteri Bottas", 10, 19.99],
-  ["W14", "W14 - Mercedes AMG Lewis Hamilton", 10, 19.99],
-];
+const carritoCompra = [];
 //TotalProductosPagina y su contador
 let TotalProductosPagina = document.getElementById("TotalProductosPagina");
 let TotalProductosPaginacont = carritoCompra.length;
@@ -143,7 +139,15 @@ function pintarProductosCarrito(productos) {
   h2Titulo.setAttribute("id", "TotalProductosCarrito");
   let h5Titulo = document.createElement("h5");
   h2Titulo.textContent = "Carrito de la Compra";
-  h5Titulo.textContent = productos.length + " Productos";
+
+  let contProductosEnCarro = 0;
+  contProductosEnCarro = parseFloat(contProductosEnCarro);
+  for (let i = 0; i < productos.length; i++) {
+    let unidadProducto = 0;
+    unidadProducto = parseFloat(productos[i][2]);
+    contProductosEnCarro = contProductosEnCarro + unidadProducto;
+  }
+  h5Titulo.textContent = contProductosEnCarro + " Productos";
   divTitulo.appendChild(h2Titulo);
   divTitulo.appendChild(h5Titulo);
   mostrarProductosPedido.appendChild(divTitulo);
@@ -168,7 +172,7 @@ function pintarProductosCarrito(productos) {
     //Añadir informacion a los elementos
     h3Nombre.textContent = productos[i][1];
     pUnidad.textContent = productos[i][2];
-    h3Precio.textContent = productos[i][3] + "€";
+    h3Precio.textContent = productos[i][3];
     equis.textContent = "X";
 
     //Añadir elementos al div
@@ -195,7 +199,16 @@ function pintarProductosCarritoResumen(productos) {
   let divBarra = document.createElement("div");
   divBarra.classList.add("pedidoBarra");
   let h3Productos = document.createElement("h3");
-  h3Productos.textContent = "Productos: " + productos.length;
+
+  let contProductosEnCarro = 0;
+  contProductosEnCarro = parseFloat(contProductosEnCarro);
+  for (let i = 0; i < productos.length; i++) {
+    let unidadProducto = 0;
+    unidadProducto = parseFloat(productos[i][2]);
+    contProductosEnCarro = contProductosEnCarro + unidadProducto;
+  }
+
+  h3Productos.textContent = "Productos: " + contProductosEnCarro;
   resumenPedido.appendChild(h1Resumen);
   resumenPedido.appendChild(divBarra);
   resumenPedido.appendChild(h3Productos);
@@ -211,13 +224,25 @@ function pintarProductosCarritoResumen(productos) {
   resumenPedido.appendChild(resumen);
 
   //Precio de los Productos
-  let sumaPrecio = 0;
+  var contPrecio = 0;
   for (let i = 0; i < productos.length; i++) {
+    let sumaPrecio = 0;
     sumaPrecio = sumaPrecio + productos[i][3];
+    let indiceCortarInicial = sumaPrecio.indexOf(" ");
+    let indiceCortarFinal = sumaPrecio.lastIndexOf("€");
+    let sumaPrecioCorregida = sumaPrecio.substring(
+      indiceCortarInicial + 1,
+      indiceCortarFinal
+    );
+    contPrecio = parseFloat(contPrecio);
+    sumaPrecioCorregida = parseFloat(sumaPrecioCorregida);
+    sumaPrecioCorregida = sumaPrecioCorregida * productos[i][2];
+    contPrecio = contPrecio + sumaPrecioCorregida;
   }
   resumenPedido.appendChild(divBarra);
   let h3Precio = document.createElement("h3");
-  h3Precio.textContent = "Precio Total: " + sumaPrecio + "€";
+  contPrecio = Math.round(contPrecio * 100) / 100;
+  h3Precio.textContent = "Precio Total: " + contPrecio + "€";
   resumenPedido.appendChild(h3Precio);
   //Mostrar elementos(Abajo) extra en el DOM
   let botonPedido = document.createElement("button");
@@ -249,6 +274,8 @@ function registrarPedido(carritoCompra) {
   xhr.onreadystatechange = function () {
     if (xhr.readyState == 4 && xhr.status == 200) {
       alert(xhr.responseText);
+      carritoCompra = [];
+      location.reload();
     }
   };
   xhr.send(JSON.stringify({ carritoCompra: carritoCompra }));
@@ -343,7 +370,11 @@ for (const botonCesta of botonesCesta) {
     ).value;
 
     alert(
-      "Se añadio a la cesta: " + nombreProdLargo + " - " + unidades + "Unidades"
+      "Se añadio a la cesta: " +
+        nombreProdLargo +
+        " - " +
+        unidades +
+        " Unidades"
     );
 
     carritoCompra.push([
