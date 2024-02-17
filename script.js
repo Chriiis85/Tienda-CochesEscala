@@ -159,7 +159,23 @@ function pintarProductosCarrito(productos) {
     let hr = document.createElement("hr");
     let img = document.createElement("img");
     let h3Nombre = document.createElement("h3");
-    let pUnidad = document.createElement("p");
+    let unidad = document.createElement("input");
+    unidad.setAttribute("type", "number");
+    unidad.classList.add("unidadArticuloCarrito");
+    unidad.setAttribute("value", 1);
+    unidad.setAttribute("min", 1);
+
+    returnUnidadProd(productos[i][1], function (unidades) {
+      unidad.max = unidades;
+    });
+
+    /*returnUnidadProd(nombreProdLargo, function (unidades) {
+      let inputSetMax = document.getElementById(
+        "unidadesProducto" + nombreProd
+      );
+      inputSetMax.max = unidades;
+    });*/
+
     let h3Precio = document.createElement("h3");
     let equis = document.createElement("button");
     //Añadir Clases
@@ -171,14 +187,15 @@ function pintarProductosCarrito(productos) {
 
     //Añadir informacion a los elementos
     h3Nombre.textContent = productos[i][1];
-    pUnidad.textContent = productos[i][2];
-    h3Precio.textContent = productos[i][3];
+    let precio = productos[i][3];
+    precio = precio.substring("€", precio.length);
+    h3Precio.textContent = precio;
     equis.textContent = "X";
-
+    //'<input class="unidadArticulo" type="number" name="" id="unidadesProducto' . $nombreProdCorto . '" min="1" value="1">';
     //Añadir elementos al div
     div.appendChild(img);
     div.appendChild(h3Nombre);
-    div.appendChild(pUnidad);
+    div.appendChild(unidad);
     div.appendChild(h3Precio);
     div.appendChild(equis);
     //Añadir elementos al DOM
