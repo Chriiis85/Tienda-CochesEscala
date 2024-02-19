@@ -74,7 +74,7 @@ if (!$con->connect_error) {
 
     <section class="body">
         <?php
-        for ($i = 0; $i < 3; $i++) {
+        for ($i = 0; $i < 10; $i++) {
             //Separar cadena para poder poner imagen
             $nombreProdCorto = strstr($productos[$i][1], ' ', true); // Obtener la parte de la cadena hasta el primer espacio
             echo $nombreProdCorto;
@@ -141,20 +141,5 @@ if (!$con->connect_error) {
         </div>
     </footer>
 </body>
-
-<script>
-    function recogerProducto() {
-        var xhttp = new XMLHttpRequest();
-        xhttp.onreadystatechange = function () {
-            if (this.readyState == 4 && this.status == 200) {
-                let producto = JSON.parse(this.response);
-            }
-        };
-        xhttp.open("POST", "recogerProductos.php", true);
-        xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        xhttp.send();
-    }
-    recogerProducto();
-</script>
 
 </html>
