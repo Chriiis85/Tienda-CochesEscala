@@ -1,4 +1,5 @@
 <?php
+//Nombre del producto a consultar pasado por POST
 $nombre_producto = $_POST["nombreProd"];
 //CONEXION CON LA BD
 $con = mysqli_connect("localhost", "root", "", "tienda");
@@ -21,6 +22,6 @@ mysqli_stmt_close($stmt);
 // Cerrar la conexión
 mysqli_close($con);
 
+//Devolver las unidades del producto
 echo $unidades;
-
 ?>

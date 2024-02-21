@@ -1,5 +1,5 @@
 <?php
-
+//Recibimos por POST el array que nos pasa con el pedido.
 $postData = file_get_contents('php://input');
 
 // Decodificar los datos JSON recibidos
@@ -9,7 +9,7 @@ if ($jsonData !== null && isset($jsonData['carritoCompra'])) {
     $carritoCompra = $jsonData['carritoCompra'];
     // Imprimir los datos recibidos para verificar si se recibieron correctamente
     //print_r($carritoCompra);
-
+    //Recoger el ultimo ID de pedido que hay en la base de datos
     $ultimoId = recogerUltimoID();
     //Bucle que recorrer el array y va insertando los productos
     for ($i = 0; $i < sizeof($carritoCompra); $i++) {
@@ -17,9 +17,15 @@ if ($jsonData !== null && isset($jsonData['carritoCompra'])) {
         $idProducto = devovlerNombreProducto($carritoCompra[$i][1]);
         $cantidad = $carritoCompra[$i][2];
         $idUsuario = 1;
-
-        //Llama a la funcion de registrar Pedido con los datos proporcionados
-        registrarPedido($ultimoId + 1, $idUsuario, $idProducto, $cantidad);
+        if (consultarCantidadDisponible($idProducto) >= $cantidad) {
+            //Llama a la funcion de registrar Pedido con los datos proporcionados
+            registrarPedido($ultimoId + 1, $idUsuario, $idProducto, $cantidad);
+            //Actualizar la tabla para quitar las unidades
+            $cantidadDisp = consultarCantidadDisponible($idProducto) - $cantidad;
+            actualizarTabla($cantidadDisp, $idProducto);
+        } else {
+            echo "No Se puede comprar, Se han elegido mas unidades de lo elegido del producto: " . $carritoCompra[$i][1];
+        }
     }
 
 } else {
@@ -27,7 +33,7 @@ if ($jsonData !== null && isset($jsonData['carritoCompra'])) {
 }
 
 
-//Funcion que devuelve el id del producto dado un nombre de producto
+//Funcion que devuelve el id del producto dado un nombre de producto.
 function devovlerNombreProducto($nombreProd)
 {
     //CONEXION CON LA BD
@@ -42,7 +48,7 @@ function devovlerNombreProducto($nombreProd)
     return $idProducto;
 }
 
-//Funcion que registra el pedido con los datos proporcionados por parametro
+//Funcion que registra el pedido con los datos proporcionados por parametro.
 function registrarPedido($id, $idUsuario, $idProducto, $cantidad)
 {
     //CONEXION CON LA BD
@@ -76,7 +82,7 @@ function registrarPedido($id, $idUsuario, $idProducto, $cantidad)
     mysqli_close($con);
 }
 
-//FUNCION QUE RECOGE EL ULTIMO ID PARA PONER UN ID DE PEDIDO
+//FUNCION QUE RECOGE EL ULTIMO ID PARA PONER UN ID DE PEDIDO.
 function recogerUltimoID()
 {
     //CONSULTA SELECT MAX(id) FROM pedidos;
@@ -103,13 +109,14 @@ function recogerUltimoID()
     return $id;
 }
 
-/*function consultarCantidadDisponible($nombre_producto)
+//Funcion que consulta la cantidad de un producto para verificar la disponibilidad de unidades de un producto.
+function consultarCantidadDisponible($nombre_producto)
 {
     //CONEXION CON LA BD
     $con = mysqli_connect("localhost", "root", "", "tienda");
 
     //CONSULTA PREPARADA
-    $consulta = 'SELECT unidades FROM `productos` WHERE nombre_producto = ?';
+    $consulta = 'SELECT unidades FROM `productos` WHERE id_producto = ?';
     $stmt = mysqli_prepare($con, $consulta);
 
     // Enlazar parámetros y ejecutar la consulta
@@ -127,5 +134,31 @@ function recogerUltimoID()
     mysqli_close($con);
 
     return $unidades;
-}*/
+}
+
+//Funcion que actualiza la cantidad del producto que se ha comprado.
+function actualizarTabla($unidad, $idProducto)
+{
+    // Crear conexión
+    $con = mysqli_connect("localhost", "root", "", "tienda");
+
+    // Verificar conexión
+    if ($con->connect_error) {
+        die("Conexión fallida: " . $con->connect_error);
+    }
+
+    //CONSULTA: UPDATE productos SET unidades=10 WHERE id_producto=1;
+    // Consulta SQL para actualizar el nombre del usuario con el id proporcionado
+    $consulta = 'UPDATE productos SET unidades=' . $unidad . ' WHERE id_producto=' . $idProducto . ';';
+
+    // Ejecutar la consulta
+    if ($con->query($consulta) === TRUE) {
+        echo "Producto actualizado correctamente";
+    } else {
+        echo "Error al actualizar el producto: " . $con->error;
+    }
+
+    // Cerrar conexión
+    $con->close();
+}
 ?>

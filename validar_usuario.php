@@ -6,18 +6,23 @@ $password = $_POST['password'];
 // Verificar si los datos son correctos en la BBDD
 $con = mysqli_connect("localhost", "root", "", "tienda");
 
+//Comprobar si la conexión funciona
 if (!$con->connect_error) {
     // Consulta preparada para evitar inyección SQL
     $consulta = 'SELECT * FROM usuarios WHERE nombre_usuario=? AND password=?';
+
+    //Ejecutamos la consulta
     $stmt = mysqli_prepare($con, $consulta);
     mysqli_stmt_bind_param($stmt, 'ss', $username, $password);
     mysqli_stmt_execute($stmt);
     $result = mysqli_stmt_get_result($stmt);
 
-
+    //Si deveulve resultados y filas, es que existe un usuario con ese nombre y contraseña ya que nos devuelve la consulta una fila
     if ($result) {
+        //Numeros de fila que deuelve
         $num_rows = mysqli_num_rows($result);
 
+        //Si devuelve mas de una fila existe y los datos son validos
         if ($num_rows > 0) {
             echo 1; // Usuario y contraseña válidos
         } else {

@@ -1,21 +1,24 @@
 <!DOCTYPE html>
 <html lang="es">
 
+<!--CABECERA Y HOJAS DE ESTILO Y JAVASCRIPT-->
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Main Page - CModels Scale</title>
-    <link rel="stylesheet" href="index.css">
-    <link rel="stylesheet" href="carrito.css">
+    <link rel="stylesheet" href="CSS/index.css">
+    <link rel="stylesheet" href="CSS/carrito.css">
     <script defer src="script.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
 </head>
+
+<!--CONSULTA QUE NOS DEUELVE TODOS LOS PRODUCTOS PARA PODER MOSTRARLOS DINAMICAMENTE-->
 <?php
 // Verificar si los datos son correctos en la BBDD
 $con = mysqli_connect("localhost", "root", "", "tienda");
 if (!$con->connect_error) {
-    // Consulta: SELECT nombre_producto FROM productos WHERE nombre_producto LIKE '%A%';
+    // Consulta: SELECT * FROM productos;
     $consulta = "SELECT * FROM productos";
     $result = mysqli_query($con, $consulta);
     if ($result) {
@@ -34,6 +37,7 @@ if (!$con->connect_error) {
 ?>
 
 <body>
+    <!--DIALOG CARRITO DE LA COMPRA-->
     <div id="dialog">
         <section class="carrito">
             <article id="mostrarProductosPedido" class="productospedido">
@@ -43,9 +47,11 @@ if (!$con->connect_error) {
         </section>
     </div>
 
-
+    <!--BARRA DE BUSQUEDA-->
     <div id="contenedor-producto">
     </div>
+
+    <!--HEADER-->
     <header>
         <section class="title">
             <h1>CMODEL SCALE CARS</h1>
@@ -72,13 +78,14 @@ if (!$con->connect_error) {
         </section>
     </header>
 
+    <!--BODY-->
     <section class="body">
         <?php
         for ($i = 0; $i < 10; $i++) {
             //Separar cadena para poder poner imagen
             $nombreProdCorto = strstr($productos[$i][1], ' ', true); // Obtener la parte de la cadena hasta el primer espacio
-            echo $nombreProdCorto;
-
+        
+            //Mostrar dinamicamente 
             echo '<article class="car-presentation">';
             echo '<div class="image">';
             echo '<img src="Imagenes/' . $nombreProdCorto . '/' . $nombreProdCorto . '-Imagen1.jpg" alt="Imagen coche ' . $productos[$i][1] . '">';
@@ -109,6 +116,7 @@ if (!$con->connect_error) {
 
     </section>
 
+    <!--FOOTER-->
     <footer>
         <div class="informacion">
             <div>

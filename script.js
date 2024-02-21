@@ -3,9 +3,8 @@
 a la funcion buscar producto para mostrar los productos*/
 window.onload = function () {
   let buscarproducto = document.getElementById("buscarproducto");
-  buscarproducto.addEventListener("keypress", function (event) {
+  buscarproducto.addEventListener("input", function (event) {
     buscarProducto(buscarproducto.value);
-    let mostrarProductos = document.getElementById("mostrarProd");
   });
 };
 
@@ -33,8 +32,6 @@ function mostrarProductos(productos) {
   let contenedorProductos = document.createElement("article");
   contenedorProductos.classList.add("mostrarProd");
   contenedorProductos.setAttribute("id", "mostrarProd");
-
-  let inputbuscarProducto = document.getElementById("buscarproducto");
 
   // Limpiar el contenido del contenedor
   contenedormostrarProductos.innerHTML = "";
@@ -198,12 +195,6 @@ function pintarProductosCarrito(productos) {
         idEquis + "nombre"
       ).textContent;
       alert("Eliminado producto:" + nombreProdEliminar);
-      for (let i = 0; i < carritoCompra.length; i++) {
-        if (carritoCompra[i][1] == nombreProdEliminar) {
-          carritoCompra.splice(carritoCompra[i][1], 1);
-          TotalProductosPagina.textContent = carritoCompra.length;
-        }
-      }
 
       pintarProductosCarrito(carritoCompra);
       //pintarProductosCarritoResumen(productos);
@@ -287,7 +278,6 @@ function pintarProductosCarrito(productos) {
 
   //Evenet Listener para registrar un Pedido
   botonPedido.addEventListener("click", function () {
-    alert("HOLA");
     if (carritoCompra.length < 1) {
       alert("NO HAY PRODUCTOS EN EL CARRITO");
     } else {
@@ -541,7 +531,7 @@ function actualizarNumeroCarrito() {
 }
 
 //FUNCION QUE RECOGE TODOS LOS PRODUCTOS PARA PODER MOSTRARLOS
-function recogerProducto() {
+/*function recogerProducto() {
   var xhttp = new XMLHttpRequest();
   xhttp.onreadystatechange = function () {
     if (this.readyState == 4 && this.status == 200) {
@@ -552,4 +542,4 @@ function recogerProducto() {
   xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
   xhttp.send();
 }
-recogerProducto();
+recogerProducto();*/
