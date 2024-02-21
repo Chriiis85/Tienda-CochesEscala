@@ -64,7 +64,9 @@ function mostrarProductos(productos) {
     let cajasproductos = document.querySelectorAll(".producto");
     for (const producto of cajasproductos) {
       producto.addEventListener("click", function () {
-        alert("Aqui:" + producto.textContent);
+        alert(producto.textContent);
+        document.cookie = "prodname=" + producto.textContent;
+        window.location.href = "PaginaProducto.php";
       });
     }
   }
@@ -123,7 +125,7 @@ function ocultarDialogo() {
 }
 
 //TotalProductosCarrito.textContent = carritoCompra.length + " Productos";
-TotalProductosPagina.textContent = TotalProductosPaginacont;
+//TotalProductosPagina.textContent = TotalProductosPaginacont;
 //ID que identifica los articulos del carrito
 let contIdProd = 0;
 //Funcion que pinta los productos en el carro
@@ -170,6 +172,7 @@ function pintarProductosCarrito(productos) {
 
     returnUnidadProd(productos[i][1], function (unidades) {
       unidad.max = unidades;
+      unidad.setAttribute("max", unidades);
     });
 
     let h3Precio = document.createElement("h3");
@@ -543,3 +546,21 @@ function actualizarNumeroCarrito() {
   xhttp.send();
 }
 recogerProducto();*/
+function delete_cookie(name) {
+  document.cookie = name + "=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;";
+}
+
+setTimeout(function () {
+  let cerrarSesion = document.getElementById("CerrarSesionBoton");
+  cerrarSesion.addEventListener("click", function () {
+    delete_cookie("username");
+    window.location.href = "index.php";
+  });
+}, 10);
+
+setTimeout(function () {
+  let TituloPagina = document.getElementById("TituloPagina");
+  TituloPagina.addEventListener("click", function () {
+    window.location.href = "index.php";
+  });
+}, 10);

@@ -12,9 +12,10 @@
 </head>
 
 <body>
+    <!--HEADER-->
     <header>
         <section class="title">
-            <h1>CMODEL SCALE CARS</h1>
+            <h1 id="TituloPagina">CMODEL SCALE CARS</h1>
         </section>
         <div class="group">
             <svg viewBox="0 0 24 24" aria-hidden="true" class="icon">
@@ -27,18 +28,100 @@
             <input class="input" type="search" id="buscarproducto" placeholder="Buscar Producto" />
         </div>
         <section class="botones">
-            <button class="buttonlogin" role="button"><a href="login.php">Iniciar Sesión</a></button>
-            <button class="buttonlogin" role="button">Crear Cuenta</button>
-            <button onclick="mostrarDialogo()" class="cart">
-                <img src="Imagenes/carrito.png" alt="">
-                <span class="count" id="TotalProductosPagina">0</span>
-            </button>
+            <?php
+            if (isset($_COOKIE["username"])) {
+                echo "<h3 id='CerrarSesion'>Bienvenido: " . $_COOKIE["username"] . "</h3>";
+                echo "<button id='CerrarSesionBoton' class='buttonlogin' role='button'>Cerrar Sesion</button>";
+            } else {
+                ?>
+                <button class="buttonlogin" role="button"><a href="login.php">Iniciar Sesión</a></button>
+                <button class="buttonlogin" role="button">Crear Cuenta</button>
+                <?php
+            }
+
+            if (isset($_COOKIE["username"])) {
+                ?>
+                <button onclick="mostrarDialogo()" class="cart">
+                    <img src="Imagenes/carrito.png" alt="">
+                    <span class="count" id="TotalProductosPagina">0</span>
+                </button>
+                <?php
+            }
+            ?>
             </div>
 
         </section>
     </header>
 
+    <!--DIALOG CARRITO DE LA COMPRA-->
+    <div id="dialog">
+        <section class="carrito">
+            <article id="mostrarProductosPedido" class="productospedido">
+            </article>
+            <article id="resumenPedido" class="resumenpedido">
+            </article>
+        </section>
+    </div>
 
+    <!--BARRA DE BUSQUEDA-->
+    <div id="contenedor-producto">
+    </div>
+    <section class="body">
+        <?php
+
+        // Verificar si los datos son correctos en la BBDD
+        $con = mysqli_connect("localhost", "root", "", "tienda");
+        if (!$con->connect_error) {
+            // Consulta: SELECT * FROM productos where nombre_producto="?";
+        
+            $consulta = 'SELECT * FROM productos where nombre_producto = "' . $_COOKIE["prodname"] . '"';
+            $result = mysqli_query($con, $consulta);
+            if ($result) {
+                // Obtener todos los resultados
+                $productos = mysqli_fetch_all($result);
+                // Devolver los resultados en formato JSON
+                //echo json_encode($productos); 
+            } else {
+                echo "Error en la consulta: " . mysqli_error($con);
+            }
+            // Cerrar la conexión
+            mysqli_close($con);
+        } else {
+            die("Error de conexión: " . mysqli_connect_error());
+        }
+        //Separar cadena para poder poner imagen
+        $nombreProdCorto = strstr($productos[0][1], ' ', true); // Obtener la parte de la cadena hasta el primer espacio
+        
+        //Mostrar dinamicamente el producto que se ha seleccionado
+        echo '<article class="car-presentation">';
+        echo '<div class="image">';
+        echo '<img src="Imagenes/' . $nombreProdCorto . '/' . $nombreProdCorto . '-Imagen1.jpg" alt="Imagen coche ' . $productos[0][1] . '">';
+        echo '</div>';
+        echo '<div class="description">';
+        echo '<h1 id="tituloProd' . $nombreProdCorto . '">' . $productos[0][1] . '</h1>';
+        echo '<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime, sint praesentium fuga impedit nisi
+                        reiciendis similique nobis ad, ipsam omnis quos accusamus soluta velit aut reprehenderit repellat.
+                        Laboriosam, sunt dolorem.</p>';
+        echo '<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime, sint praesentium fuga impedit nisi
+                        reiciendis similique nobis ad, ipsam omnis quos accusamus soluta velit aut reprehenderit repellat.
+                        Laboriosam, sunt dolorem.</p>';
+        echo '<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime, sint praesentium fuga impedit nisi
+                        reiciendis similique nobis ad, ipsam omnis quos accusamus soluta velit aut reprehenderit repellat.
+                        Laboriosam, sunt dolorem.</p>';
+        echo '<h2 id="precio' . $nombreProdCorto . '">Precio: ' . $productos[0][2] . '€ P.V.P</h2>';
+        echo '<div class="botonesProducto">';
+        echo '<button id="comprarProducto-' . $nombreProdCorto . '" class="botonCompra">Comprar Producto</button>';
+        echo '<button id="cestaProducto-' . $nombreProdCorto . '" class="botonCesta">Añadir a la Cesta</button>';
+        echo '<h1>Unidades:</h1>';
+        echo '<input class="unidadArticulo" type="number" name="" id="unidadesProducto' . $nombreProdCorto . '" min="1" value="1">';
+        echo '</div>';
+        echo '</div>';
+        echo '</article>';
+        echo '<hr>';
+        ?>
+    </section>
+
+    <!--FOOTER-->
     <footer>
         <div class="informacion">
             <div>

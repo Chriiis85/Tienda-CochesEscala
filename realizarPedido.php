@@ -17,14 +17,14 @@ if ($jsonData !== null && isset($jsonData['carritoCompra'])) {
         $idProducto = devovlerNombreProducto($carritoCompra[$i][1]);
         $cantidad = $carritoCompra[$i][2];
         $idUsuario = 1;
-        if (consultarCantidadDisponible($idProducto) >= $cantidad) {
+        if (consultarCantidadDisponible($idProducto) >= $cantidad && $cantidad > 0) {
             //Llama a la funcion de registrar Pedido con los datos proporcionados
             registrarPedido($ultimoId + 1, $idUsuario, $idProducto, $cantidad);
             //Actualizar la tabla para quitar las unidades
             $cantidadDisp = consultarCantidadDisponible($idProducto) - $cantidad;
             actualizarTabla($cantidadDisp, $idProducto);
         } else {
-            echo "No Se puede comprar, Se han elegido mas unidades de lo elegido del producto: " . $carritoCompra[$i][1];
+            echo "No Se puede comprar, Se han elegido seleccionado unidades erroneas del producto: " . $carritoCompra[$i][1];
         }
     }
 

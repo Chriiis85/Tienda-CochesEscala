@@ -15,6 +15,7 @@
 
 <!--CONSULTA QUE NOS DEUELVE TODOS LOS PRODUCTOS PARA PODER MOSTRARLOS DINAMICAMENTE-->
 <?php
+session_start();
 // Verificar si los datos son correctos en la BBDD
 $con = mysqli_connect("localhost", "root", "", "tienda");
 if (!$con->connect_error) {
@@ -54,7 +55,7 @@ if (!$con->connect_error) {
     <!--HEADER-->
     <header>
         <section class="title">
-            <h1>CMODEL SCALE CARS</h1>
+            <h1 id="TituloPagina">CMODEL SCALE CARS</h1>
         </section>
         <div class="group">
             <svg viewBox="0 0 24 24" aria-hidden="true" class="icon">
@@ -67,12 +68,26 @@ if (!$con->connect_error) {
             <input class="input" type="search" id="buscarproducto" placeholder="Buscar Producto" />
         </div>
         <section class="botones">
-            <button class="buttonlogin" role="button"><a href="login.php">Iniciar Sesión</a></button>
-            <button class="buttonlogin" role="button">Crear Cuenta</button>
-            <button onclick="mostrarDialogo()" class="cart">
-                <img src="Imagenes/carrito.png" alt="">
-                <span class="count" id="TotalProductosPagina">0</span>
-            </button>
+            <?php
+            if (isset($_COOKIE["username"])) {
+                echo "<h3 id='CerrarSesion'>Bienvenido: " . $_COOKIE["username"] . "</h3>";
+                echo "<button id='CerrarSesionBoton' class='buttonlogin' role='button'>Cerrar Sesion</button>";
+            } else {
+                ?>
+                <button class="buttonlogin" role="button"><a href="login.php">Iniciar Sesión</a></button>
+                <button class="buttonlogin" role="button">Crear Cuenta</button>
+                <?php
+            }
+
+            if (isset($_COOKIE["username"])) {
+                ?>
+                <button onclick="mostrarDialogo()" class="cart">
+                    <img src="Imagenes/carrito.png" alt="">
+                    <span class="count" id="TotalProductosPagina">0</span>
+                </button>
+                <?php
+            }
+            ?>
             </div>
 
         </section>
@@ -106,7 +121,7 @@ if (!$con->connect_error) {
             echo '<button id="comprarProducto-' . $nombreProdCorto . '" class="botonCompra">Comprar Producto</button>';
             echo '<button id="cestaProducto-' . $nombreProdCorto . '" class="botonCesta">Añadir a la Cesta</button>';
             echo '<h1>Unidades:</h1>';
-            echo '<input class="unidadArticulo" type="number" name="" id="unidadesProducto' . $nombreProdCorto . '" min="1" value="1">';
+            echo '<input class="unidadArticulo" type="number" name="" id="unidadesProducto' . $nombreProdCorto . '" min="1" value="1" max="' . $productos[$i][3] . '">';
             echo '</div>';
             echo '</div>';
             echo '</article>';
