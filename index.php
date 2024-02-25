@@ -75,7 +75,7 @@ if (!$con->connect_error) {
             } else {
                 ?>
                 <button class="buttonlogin" role="button"><a href="login.php">Iniciar Sesión</a></button>
-                <button class="buttonlogin" role="button">Crear Cuenta</button>
+                <button class="buttonlogin" role="button"><a href="login.php">Crear Cuenta</button>
                 <?php
             }
 
