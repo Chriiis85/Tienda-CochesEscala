@@ -1,23 +1,39 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Inicio Sesión - CModels Scale</title>
+    <link rel="stylesheet" href="CSS/login.css">
 </head>
 
 <body>
-    <input type="text" id="username" class="form-control" required />
-    <input type="password" id="password" class="form-control" required />
-    <!-- Submit button -->
-    <button type="submit" id="iniciarSesion" class="btn btn-primary btn-block mb-4">
-        Iniciar Sesión
-    </button>
-    <!-- Submit button -->
-    <button id="volver" class="btn btn-primary btn-block mb-4">
-        Volver Atrás
-    </button>
+    <div class="box">
+        <h1>INICIAR SESIÓN</h1>
+        <form role="form" method="post">
+
+            <div class="inputBox">
+                <input type="text" id="username" name="username" autocomplete="off" required>
+                <label>Username</label>
+            </div>
+            <div class="inputBox">
+                <input type="password" id="password" name="password" autocomplete="off" required>
+                <label>Password</label>
+            </div>
+            <div class="botones">
+                <!-- Submit button -->
+                <button type="submit" id="iniciarSesion" class="btn btn-primary btn-block mb-4">
+                    Iniciar Sesión
+                </button>
+                <!-- Submit button -->
+                <button id="volver" class="btn btn-primary btn-block mb-4">
+                    Volver Atrás
+                </button>
+            </div>
+        </form>
+    </div>
+
 </body>
 <script>
     //Recoger los elementos el DOM

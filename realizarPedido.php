@@ -24,7 +24,7 @@ if ($jsonData !== null && isset($jsonData['carritoCompra'])) {
             $cantidadDisp = consultarCantidadDisponible($idProducto) - $cantidad;
             actualizarTabla($cantidadDisp, $idProducto);
         } else {
-            echo "No Se puede comprar, Se han elegido seleccionado unidades erroneas del producto: " . $carritoCompra[$i][1];
+            echo "No Se puede comprar, Se han seleccionado unidades erroneas del producto: " . $carritoCompra[$i][1];
         }
     }
 

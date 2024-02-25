@@ -6,6 +6,7 @@ window.onload = function () {
   buscarproducto.addEventListener("click", function () {
     if (verificarCookie("username")) {
       alert("Debe Iniciar Sesión para navegar!!!");
+      window.location.href = "InicioSesion.php";
     } else {
       buscarproducto.addEventListener("input", function (event) {
         buscarProducto(buscarproducto.value);
@@ -429,6 +430,7 @@ for (const botonCompra of botonesCompra) {
       mostrarDialogo();
     } else {
       alert("Debe Iniciar Sesión para poder comprar!!!");
+      window.location.href = "InicioSesion.php";
     }
   });
 }
@@ -501,6 +503,7 @@ for (const botonCesta of botonesCesta) {
       });
     } else {
       alert("Debe Iniciar Sesión para poder comprar!!!");
+      window.location.href = "InicioSesion.php";
     }
   });
 }
