@@ -6,6 +6,7 @@ body {
   font-family: "Bebas Neue", sans-serif;
   background: url(https://media.gq.com.mx/photos/648626690322827b892835f6/16:9/w_2560%2Cc_limit/540463220);
   background-size: cover;
+  color: white;
 }
 .box {
   position: absolute;
@@ -95,7 +96,8 @@ button {
   font-size: 12px;
   font-family: "Bebas Neue", sans-serif;
   letter-spacing: 2.5px;
-  font-weight: 500;
+  font-weight: bold;
+  text-transform: uppercase;
   color: #000;
   background-color: #fff;
   border: none;

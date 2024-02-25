@@ -27,7 +27,6 @@ if (!$con->connect_error) {
         if ($num_rows > 0) {
             echo 1; // Usuario y contraseña válidos
             setcookie("username", $username, time() + 3600, "/"); // Expires in 1 hour
-
         } else {
             echo 2; // Usuario o contraseña incorrectos
         }
