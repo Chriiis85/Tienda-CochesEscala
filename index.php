@@ -69,16 +69,20 @@ if (!$con->connect_error) {
         </div>
         <section class="botones">
             <?php
+            //SI LA COOKIE DEL USUARIO EXISTE MOSTRAREMOS SU NOMBRE Y UN BOTON PARA CERRAR LA SESION
             if (isset($_COOKIE["username"])) {
                 echo "<h3 id='CerrarSesion'>Bienvenido: " . $_COOKIE["username"] . "</h3>";
                 echo "<button id='CerrarSesionBoton' class='buttonlogin' role='button'>Cerrar Sesion</button>";
-            } else {
+            }
+            //SI LA COOKIE DEL USUARIO NO EXISTE MOSTRAREMOS LOS BOTONES PARA QUE E CLIENTE SE LOGE
+            else {
                 ?>
-                <button class="buttonlogin" role="button"><a href="login.php">Iniciar Sesión</a></button>
-                <button class="buttonlogin" role="button"><a href="login.php">Crear Cuenta</button>
+                <button class="buttonlogin" role="button"><a href="InicioSesion.php">Iniciar Sesión</a></button>
+                <button class="buttonlogin" role="button"><a href="InicioSesion.php">Crear Cuenta</button>
                 <?php
             }
-
+            //EL CARRITO DE LA COMPRA SOLO SE MUESTRA SI EL USUARIO HA INICIADO SESION
+            
             if (isset($_COOKIE["username"])) {
                 ?>
                 <button onclick="mostrarDialogo()" class="cart">
