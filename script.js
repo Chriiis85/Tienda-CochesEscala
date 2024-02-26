@@ -1,7 +1,25 @@
 /*----------------------------------------------------------FUNCIONALIDAD PAGINA PRINCIPAL-------------------------------------------------*/
+const carritoCompra = [];
+let carritoCompraP = [];
+/*FUNCION PARA PODER GUARDAR LA COOKIE*/
+function guardarArrayEnCookie(nombreCookie, array, expiracion) {
+  // Convertir el array en una cadena JSON
+  var arrayString = JSON.stringify(array);
+  // Crear la cookie con el nombre especificado y la cadena JSON como valor
+  document.cookie =
+    nombreCookie + "=" + arrayString + "; expires=" + expiracion + "; path=/";
+}
 /*Funcion que al cargar la aplicacion detecta cada input de las teclas, recoje la palabra y el valor escrito en el campo y lo manda
 a la funcion buscar producto para mostrar los productos*/
 window.onload = function () {
+  /*guardarArrayEnCookie(
+    "carritoCompraCookie",
+    carritoCompra,
+    "Thu, 01 Jan 2100 00:00:00 GMT"
+  );*/
+  carritoCompraP = obtenerCookie("carritoCompraCookie");
+  alert(carritoCompraP);
+
   let buscarproducto = document.getElementById("buscarproducto");
   buscarproducto.addEventListener("click", function () {
     if (verificarCookie("username")) {
@@ -97,7 +115,6 @@ document.addEventListener("click", function (event) {
 });
 
 /*---------------------------------------------------------------FUNCIONALIDAD DEL CARRITO-------------------------------------------------*/
-const carritoCompra = [];
 //TotalProductosPagina y su contador
 let TotalProductosPagina = document.getElementById("TotalProductosPagina");
 let TotalProductosPaginacont = carritoCompra.length;
@@ -121,6 +138,8 @@ var fondoOscuro = document.getElementById("fondoOscuro");
 function mostrarDialogo() {
   dialogo.style.display = "block";
   document.getElementsByTagName("body")[0].style.overflow = "hidden";
+  const carritoRecuperado = obtenerCookie("carritoCompraCookie");
+  console.log(carritoRecuperado);
   pintarProductosCarrito(carritoCompra);
 }
 
@@ -166,12 +185,27 @@ function pintarProductosCarrito(productos) {
     img.setAttribute("id", contIdProd + "img");
     let h3Nombre = document.createElement("h3");
     h3Nombre.setAttribute("id", contIdProd + "nombre");
+    h3Nombre.classList.add("nombreProdCarrito");
     let unidad = document.createElement("input");
     unidad.setAttribute("id", contIdProd + "unidad");
     unidad.setAttribute("type", "number");
     unidad.classList.add("unidadArticuloCarrito");
     unidad.setAttribute("value", productos[i][2]);
     unidad.setAttribute("min", 1);
+
+    unidad.addEventListener("input", function (event) {
+      //Recoger todas las unidades del carrito para ver si se han modificado y pedir bien el pedido con las unidades si se modifican en el carro
+      let inputUnidad = document.querySelectorAll(".unidadArticuloCarrito");
+      let i = 0;
+      for (const input of inputUnidad) {
+        let valor = input.value;
+        carritoCompra[i][2] = valor;
+        i++;
+      }
+      setTimeout(function () {
+        pintarProductosCarrito(carritoCompra);
+      }, 100);
+    });
 
     returnUnidadProd(productos[i][1], function (unidades) {
       unidad.max = unidades;
@@ -222,7 +256,7 @@ function pintarProductosCarrito(productos) {
       } else {
         alert("El Producto " + nombreProdEliminar + " no se encuentra.");
       }
-
+      actualizarNumeroCarrito();
       pintarProductosCarrito(carritoCompra);
     });
 
@@ -316,9 +350,39 @@ function pintarProductosCarrito(productos) {
         i++;
       }
 
-      registrarPedido(carritoCompra);
-      alert(carritoCompra);
-      alert(productos);
+      //FUNCION QUE VERIFICA SI EL PEDIDO ESTA CORRECTO Y LO MANDA
+      async function verificarPedido() {
+        let contMal = 0;
+        let nombresProducto = document.querySelectorAll(".nombreProdCarrito");
+
+        for (let j = 0; j < nombresProducto.length; j++) {
+          let unidades = await obtenerUnidades(nombresProducto[j].textContent);
+          //alert("UNidad en carrito:" + carritoCompra[j][2]);
+          //alert("UNidad disp:" + unidades);
+          if (carritoCompra[j][2] > unidades) {
+            contMal++;
+          }
+        }
+
+        if (contMal === 0) {
+          registrarPedido(carritoCompra);
+          alert("PEDIDO REALIZADO CORRECTAMENTE");
+        } else {
+          alert(
+            "No se puede Realizar el Pedido. Seleccione las unidades correctas."
+          );
+        }
+      }
+
+      async function obtenerUnidades(producto) {
+        return new Promise((resolve, reject) => {
+          returnUnidadProd(producto, function (unidades) {
+            resolve(unidades);
+          });
+        });
+      }
+
+      verificarPedido();
     }
   });
   //Appendchild
@@ -381,53 +445,64 @@ let botonesCompra = document.querySelectorAll(".botonCompra");
 for (const botonCompra of botonesCompra) {
   botonCompra.addEventListener("click", function () {
     if (!verificarCookie("username")) {
-      let idBoton = botonCompra.id;
+      let nombreRecoger = botonCompra.id.split("-");
+      nombreRecoger = nombreRecoger[1];
 
-      let nombreProdCorto = idBoton.split("-");
-      nombreProdCorto = nombreProdCorto[1];
+      let stock = 0;
+      //VERIFICAR SI LAS UNIDADES DEL PRODUCTO ESTAN DISPONIBLES
+      returnUnidadProd(nombreRecoger, function (unidades2) {
+        stock = unidades2;
+        let idBoton = botonCompra.id;
 
-      let nombreProdLargo = document.getElementById(
-        "tituloProd" + nombreProdCorto
-      ).textContent;
+        let nombreProdCorto = idBoton.split("-");
+        nombreProdCorto = nombreProdCorto[1];
 
-      let precioProd = document.getElementById(
-        "precio" + nombreProdCorto
-      ).textContent;
+        let nombreProdLargo = document.getElementById(
+          "tituloProd" + nombreProdCorto
+        ).textContent;
 
-      let indiceInicialPrecio = precioProd.indexOf(" ");
-      let indiceFinalPrecio = precioProd.indexOf("P", indiceInicialPrecio);
-      let precio = precioProd.substring(
-        indiceInicialPrecio + 1,
-        indiceFinalPrecio
-      );
+        let precioProd = document.getElementById(
+          "precio" + nombreProdCorto
+        ).textContent;
 
-      let unidades = document.getElementById(
-        "unidadesProducto" + nombreProdCorto
-      ).value;
+        let indiceInicialPrecio = precioProd.indexOf(" ");
+        let indiceFinalPrecio = precioProd.indexOf("P", indiceInicialPrecio);
+        let precio = precioProd.substring(
+          indiceInicialPrecio + 1,
+          indiceFinalPrecio
+        );
 
-      // Verificar si el producto ya está en el carrito
-      for (let i = 0; i < carritoCompra.length; i++) {
-        if (carritoCompra[i][1] == nombreProdLargo) {
-          carritoCompra[i][2]++;
+        let unidades = document.getElementById(
+          "unidadesProducto" + nombreProdCorto
+        ).value;
+        if (unidades <= stock) {
+          // Verificar si el producto ya está en el carrito
+          for (let i = 0; i < carritoCompra.length; i++) {
+            if (carritoCompra[i][1] == nombreProdLargo) {
+              carritoCompra[i][2]++;
+              mostrarDialogo();
+              productoYaEnCarrito = true;
+              break;
+            }
+          }
+          let productoYaEnCarrito = false;
+
+          // Si el producto no está en el carrito, añadirlo
+          if (!productoYaEnCarrito) {
+            carritoCompra.push([
+              nombreProdCorto,
+              nombreProdLargo,
+              unidades,
+              precioProd,
+            ]);
+          }
+
+          actualizarNumeroCarrito();
           mostrarDialogo();
-          productoYaEnCarrito = true;
-          break;
+        } else {
+          alert("NO hay las unidades seleccionadas para este producto.");
         }
-      }
-      let productoYaEnCarrito = false;
-
-      // Si el producto no está en el carrito, añadirlo
-      if (!productoYaEnCarrito) {
-        carritoCompra.push([
-          nombreProdCorto,
-          nombreProdLargo,
-          unidades,
-          precioProd,
-        ]);
-      }
-
-      actualizarNumeroCarrito();
-      mostrarDialogo();
+      });
     } else {
       alert("Debe Iniciar Sesión para poder comprar!!!");
       window.location.href = "InicioSesion.php";
@@ -492,6 +567,11 @@ for (const botonCesta of botonesCesta) {
               unidades,
               precioProd,
             ]);
+            guardarArrayEnCookie(
+              "carritoCompraCookie",
+              carritoCompra,
+              "Thu, 01 Jan 2100 00:00:00 GMT"
+            );
           }
 
           actualizarNumeroCarrito();
@@ -559,15 +639,6 @@ function verificarCookie(nombreCookie) {
   return true;
 }
 
-/*FUNCION PARA PODER GUARDAR LA COOKIE*/
-function guardarArrayEnCookie(nombreCookie, array, expiracion) {
-  // Convertir el array en una cadena JSON
-  var arrayString = JSON.stringify(array);
-  // Crear la cookie con el nombre especificado y la cadena JSON como valor
-  document.cookie =
-    nombreCookie + "=" + arrayString + "; expires=" + expiracion + "; path=/";
-}
-
 /*FUNCION PARA PODER RECOGER LA COOKIE*/
 function obtenerCookie(nombreCookie) {
   // Separar todas las cookies en una matriz
@@ -585,3 +656,5 @@ function obtenerCookie(nombreCookie) {
   // Si no se encuentra la cookie, devolver null
   return null;
 }
+
+/*FUNCIONES PARA PODER GUARDAR LA COOKIE DEL CARRITO*/

@@ -60,7 +60,7 @@
     let mail;
 
     //FUNCION AJAX QUR VALIDA LOS USUARIOS
-    function registrarUsuario() {
+    botonRegistrar.addEventListener("click", function () {
         //Recoge del DOM los inputs
         username = document.getElementById("username").value;
         password = document.getElementById("password").value;
@@ -74,18 +74,16 @@
             if (this.readyState == 4 && this.status == 200) {
                 //Si la respuesta es de valor 1, es correcto y se inicia sesion
                 alert(this.responseText);
+                location.href = "InicioSesion.php";
             }
         }
         //Mandamos el AJAX
         xhttp.open("POST", "registrar_usuario.php", true);
         xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
         xhttp.send("username=" + username + "&password=" + password + "&name=" + name + "&surname=" + surname + "&mail=" + mail);
-    }
-
-    //Eventos de escucha para los botones de la pagina
-    botonRegistrar.addEventListener("click", function () {
-        registrarUsuario();
     });
+
+
 
     //Eventos de escucha para los botones de la pagina
     botonAtras.addEventListener("click", function () {

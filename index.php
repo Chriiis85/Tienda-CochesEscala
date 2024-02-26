@@ -78,7 +78,7 @@ if (!$con->connect_error) {
             else {
                 ?>
                 <button class="buttonlogin" role="button"><a href="InicioSesion.php">Iniciar Sesión</a></button>
-                <button class="buttonlogin" role="button"><a href="InicioSesion.php">Crear Cuenta</a></button>
+                <button class="buttonlogin" role="button"><a href="Registrar.php">Crear Cuenta</a></button>
                 <?php
             }
             //EL CARRITO DE LA COMPRA SOLO SE MUESTRA SI EL USUARIO HA INICIADO SESION
