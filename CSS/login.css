@@ -10,6 +10,10 @@ body {
 }
 .box {
   position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
   z-index: 99;
   top: 50%;
   left: 50%;
@@ -100,6 +104,15 @@ a {
   gap: 30px;
 }
 
+.botonCentro {
+  margin-top: 20px;
+  width: 200px;
+}
+
+.botonRegistro {
+  width: 200px;
+}
+
 button {
   width: 75%;
   padding: 1.3em 3em;
@@ -111,7 +124,7 @@ button {
   color: #000;
   background-color: #fff;
   border: none;
-  border-radius: 45px;
+  border-radius: 10px;
   box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease 0s;
   cursor: pointer;

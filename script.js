@@ -1,5 +1,7 @@
 /*----------------------------------------------------------FUNCIONALIDAD PAGINA PRINCIPAL-------------------------------------------------*/
+/*VARIABLE GLOBAL DEL CARRITO*/
 const carritoCompra = [];
+/*VARIABLE GLOBAL AUXILIAR DEL CARRITO*/
 let carritoCompraP = [];
 /*FUNCION PARA PODER GUARDAR LA COOKIE*/
 function guardarArrayEnCookie(nombreCookie, array, expiracion) {
@@ -12,13 +14,8 @@ function guardarArrayEnCookie(nombreCookie, array, expiracion) {
 /*Funcion que al cargar la aplicacion detecta cada input de las teclas, recoje la palabra y el valor escrito en el campo y lo manda
 a la funcion buscar producto para mostrar los productos*/
 window.onload = function () {
-  /*guardarArrayEnCookie(
-    "carritoCompraCookie",
-    carritoCompra,
-    "Thu, 01 Jan 2100 00:00:00 GMT"
-  );*/
   carritoCompraP = obtenerCookie("carritoCompraCookie");
-  alert(carritoCompraP);
+  //alert(carritoCompraP);
 
   let buscarproducto = document.getElementById("buscarproducto");
   buscarproducto.addEventListener("click", function () {
@@ -138,8 +135,6 @@ var fondoOscuro = document.getElementById("fondoOscuro");
 function mostrarDialogo() {
   dialogo.style.display = "block";
   document.getElementsByTagName("body")[0].style.overflow = "hidden";
-  const carritoRecuperado = obtenerCookie("carritoCompraCookie");
-  console.log(carritoRecuperado);
   pintarProductosCarrito(carritoCompra);
 }
 
@@ -224,6 +219,7 @@ function pintarProductosCarrito(productos) {
 
     //Añadir informacion a los elementos
     h3Nombre.textContent = productos[i][1];
+
     let precio = productos[i][3];
     precio = precio.substring("€", precio.length);
     h3Precio.textContent = precio;
@@ -311,6 +307,7 @@ function pintarProductosCarrito(productos) {
   for (let i = 0; i < productos.length; i++) {
     let sumaPrecio = 0;
     sumaPrecio = sumaPrecio + productos[i][3];
+    sumaPrecio = sumaPrecio.toString();
     let indiceCortarInicial = sumaPrecio.indexOf(" ");
     let indiceCortarFinal = sumaPrecio.lastIndexOf("€");
     let sumaPrecioCorregida = sumaPrecio.substring(
@@ -656,5 +653,3 @@ function obtenerCookie(nombreCookie) {
   // Si no se encuentra la cookie, devolver null
   return null;
 }
-
-/*FUNCIONES PARA PODER GUARDAR LA COOKIE DEL CARRITO*/

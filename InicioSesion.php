@@ -11,7 +11,7 @@
 <body>
     <div class="box">
         <h1>INICIAR SESIÓN</h1>
-        <form role="form" method="post">
+        <form role="form" method="post" action="validar_usuario.php">
 
             <div class="inputBox">
                 <input type="text" id="username" name="username" autocomplete="off" required>
@@ -21,23 +21,26 @@
                 <input type="password" id="password" name="password" autocomplete="off" required>
                 <label>Password</label>
             </div>
-            <h3>No tienes cuenta?! <a href="Registrar.php">Registrate aquí</a></h3>
+            <h3>No tienes cuenta?! <a href="Registrar.php">Registrate</a></h3>
             <div class="botones">
                 <!-- Submit button -->
-                <button type="submit" id="iniciarSesion" class="btn btn-primary btn-block mb-4">
+                <button class="botonRegistro" type="submit" id="iniciarSesion" class="btn btn-primary btn-block mb-4">
                     Iniciar Sesión
                 </button>
-                <!-- Submit button -->
-                <button id="volver" class="btn btn-primary btn-block mb-4">
-                    Volver Atrás
-                </button>
+
             </div>
         </form>
+        <!-- Submit button -->
+        <button class="botonCentro" onclick="volver();" id="volver" class="btn btn-primary btn-block mb-4">
+            Volver Atrás
+        </button>
     </div>
 
 </body>
+<!--LA FUNCION DE REGISTRO ESTA HECHA CON AJAX PERO LOS ALERT DE JS CHOCAN CON EL PHP Y SE REALIZAN A LA SEGUNDA VEZ QUE SE INTRODUCEN
+PARA EVITAR ESTO SE HA CAMBIADO LA FORMA DE HACERLO Y SE HACE MEDIANTE UN FORM NORMAL-->
 <script>
-    //Recoger los elementos el DOM
+    /*//Recoger los elementos el DOM
     let botonIniciarSesion = document.getElementById("iniciarSesion");
     let botonAtras = document.getElementById("volver");
     //Variables para guardar el contenido de los inpus
@@ -79,9 +82,11 @@
     //Eventos de escucha para los botones de la pagina
     botonAtras.addEventListener("click", function () {
         location.href = "index.php";
-    });
+    });*/
 
-
+    function volver() {
+        window.location.href = "index.php";
+    }
 </script>
 
 </html>

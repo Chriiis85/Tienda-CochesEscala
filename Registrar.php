@@ -11,8 +11,7 @@
 <body>
     <div class="box">
         <h1>REGISTRAR USUARIO</h1>
-        <form role="form" method="post">
-
+        <form role="form" method="post" action="registrar_usuario.php">
             <div class="inputBox">
                 <input type="text" id="username" name="username" autocomplete="off" required>
                 <label>Username</label>
@@ -33,23 +32,27 @@
                 <input type="password" id="password" name="password" autocomplete="off" required>
                 <label>Password</label>
             </div>
-            <h3>Ya tienes una cuenta?! <a href="InicioSesion.php">Inicia Sesión aquí</a></h3>
+            <h3>Tienes una cuenta?! <a href="InicioSesion.php">Inicia Sesión</a></h3>
             <div class="botones">
                 <!-- Submit button -->
-                <button type="submit" id="registrar" class="btn btn-primary btn-block mb-4">
+                <button class="botonRegistro" type="submit" id="registrar" class="btn btn-primary btn-block mb-4">
                     Confirmar Registro
-                </button>
-                <!-- Submit button -->
-                <button id="volver" class="btn btn-primary btn-block mb-4">
-                    Volver Atrás
                 </button>
             </div>
         </form>
+        <!-- Submit button -->
+        <button class="botonCentro" formnovalidate id="volver" onclick="volver();"
+            class="btn btn-primary btn-block mb-4">
+            Volver Atrás
+        </button>
     </div>
 
 </body>
+
+<!--LA FUNCION DE REGISTRO ESTA HECHA CON AJAX PERO LOS ALERT DE JS CHOCAN CON EL PHP Y SE REALIZAN A LA SEGUNDA VEZ QUE SE INTRODUCEN
+PARA EVITAR ESTO SE HA CAMBIADO LA FORMA DE HACERLO Y SE HACE MEDIANTE UN FORM NORMAL-->
 <script>
-    //Recoger los elementos el DOM
+    /*//Recoger los elementos el DOM
     let botonRegistrar = document.getElementById("registrar");
     let botonAtras = document.getElementById("volver");
     //Variables para guardar el contenido de los inpus
@@ -81,16 +84,11 @@
         xhttp.open("POST", "registrar_usuario.php", true);
         xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
         xhttp.send("username=" + username + "&password=" + password + "&name=" + name + "&surname=" + surname + "&mail=" + mail);
-    });
+    });*/
 
-
-
-    //Eventos de escucha para los botones de la pagina
-    botonAtras.addEventListener("click", function () {
-        location.href = "index.php";
-    });
-
-
+    function volver() {
+        window.location.href = "InicioSesion.php";
+    }
 </script>
 
 </html>

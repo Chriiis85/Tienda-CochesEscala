@@ -25,10 +25,16 @@ if (!$con->connect_error) {
 
         //Si devuelve mas de una fila existe y los datos son validos
         if ($num_rows > 0) {
-            echo 1; // Usuario y contraseña válidos
             setcookie("username", $username, time() + 3600, "/"); // Expires in 1 hour
+            echo '<script language="javascript">';
+            echo 'alert("Bienvenido de nuevo: ' . $username . '");';
+            echo 'window.location.href = "index.php";';
+            echo '</script>';
         } else {
-            echo 2; // Usuario o contraseña incorrectos
+            echo '<script language="javascript">';
+            echo 'alert("No se ha podido Iniciar Sesión");';
+            echo 'window.location.href = "InicioSesion.php";';
+            echo '</script>';
         }
 
         // Cerrar la conexión
