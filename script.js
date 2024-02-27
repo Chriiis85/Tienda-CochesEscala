@@ -14,15 +14,18 @@ function guardarArrayEnCookie(nombreCookie, array, expiracion) {
 /*Funcion que al cargar la aplicacion detecta cada input de las teclas, recoje la palabra y el valor escrito en el campo y lo manda
 a la funcion buscar producto para mostrar los productos*/
 window.onload = function () {
+  //Cookie del carrito
   carritoCompraP = obtenerCookie("carritoCompraCookie");
-  //alert(carritoCompraP);
 
+  //Recogo el input para detectar lo que se va introduciendo para poder mostraro
   let buscarproducto = document.getElementById("buscarproducto");
   buscarproducto.addEventListener("click", function () {
+    //Si no tiene sesion iniciada no deja navegar
     if (verificarCookie("username")) {
       alert("Debe Iniciar Sesión para navegar!!!");
       window.location.href = "InicioSesion.php";
     } else {
+      //Muestra los productos
       buscarproducto.addEventListener("input", function (event) {
         buscarProducto(buscarproducto.value);
       });
@@ -69,6 +72,7 @@ function mostrarProductos(productos) {
     contenedormostrarProductos.appendChild(contenedorProductos);
   } else {
     for (let i = 0; i < productos.length; i++) {
+      //Crea los elementos en el DOM
       console.log(productos[i][0]);
       let div = document.createElement("div");
       div.classList.add("producto");
@@ -83,8 +87,10 @@ function mostrarProductos(productos) {
     }
     contenedormostrarProductos.appendChild(contenedorProductos);
 
+    //Cre las cajar donde se muestran los productos
     let cajasproductos = document.querySelectorAll(".producto");
     for (const producto of cajasproductos) {
+      //Redirige el producto seleccionado
       producto.addEventListener("click", function () {
         document.cookie = "prodname=" + producto.textContent;
         window.location.href = "PaginaProducto.php";
@@ -132,12 +138,14 @@ document.getElementsByTagName("body")[0].style.overflow = "auto";
 var dialogo = document.getElementById("dialog");
 var fondoOscuro = document.getElementById("fondoOscuro");
 
+//Muestra el carrito de la compra
 function mostrarDialogo() {
   dialogo.style.display = "block";
   document.getElementsByTagName("body")[0].style.overflow = "hidden";
   pintarProductosCarrito(carritoCompra);
 }
 
+//Cierra el carrito de la compra
 function ocultarDialogo() {
   dialogo.style.display = "none";
   document.getElementsByTagName("body")[0].style.overflow = "auto";
@@ -156,6 +164,7 @@ function pintarProductosCarrito(productos) {
   let h5Titulo = document.createElement("h5");
   h2Titulo.textContent = "Carrito de la Compra";
 
+  //Contador del productos en el carro
   let contProductosEnCarro = 0;
   contProductosEnCarro = parseFloat(contProductosEnCarro);
   for (let i = 0; i < productos.length; i++) {
@@ -172,7 +181,7 @@ function pintarProductosCarrito(productos) {
   for (let i = 0; i < productos.length; i++) {
     contIdProd++;
 
-    //Crear Elementos
+    //Crear Elementos en el DOM
     let div = document.createElement("div");
     div.setAttribute("id", contIdProd + "div");
     let hr = document.createElement("hr");
@@ -188,6 +197,7 @@ function pintarProductosCarrito(productos) {
     unidad.setAttribute("value", productos[i][2]);
     unidad.setAttribute("min", 1);
 
+    //Actualiza las unidades de los productos para verlos y pedirlos correctamente
     unidad.addEventListener("input", function (event) {
       //Recoger todas las unidades del carrito para ver si se han modificado y pedir bien el pedido con las unidades si se modifican en el carro
       let inputUnidad = document.querySelectorAll(".unidadArticuloCarrito");
@@ -202,6 +212,7 @@ function pintarProductosCarrito(productos) {
       }, 100);
     });
 
+    //Pone el maximo de unidades a escoger de cada pedido
     returnUnidadProd(productos[i][1], function (unidades) {
       unidad.max = unidades;
       unidad.setAttribute("max", unidades);
@@ -280,6 +291,7 @@ function pintarProductosCarrito(productos) {
   divBarra.classList.add("pedidoBarra");
   let h3Productos = document.createElement("h3");
 
+  //Cuenta los productos en el carro y si ponen mas unidades
   contProductosEnCarro = parseFloat(contProductosEnCarro);
   for (let i = 0; i < productos.length; i++) {
     let unidadProducto = 0;
@@ -302,7 +314,7 @@ function pintarProductosCarrito(productos) {
   }
   resumenPedido.appendChild(resumen);
 
-  //Precio de los Productos
+  //Precio de los Productos para hacer el contador del precio final
   var contPrecio = 0;
   for (let i = 0; i < productos.length; i++) {
     let sumaPrecio = 0;
@@ -361,6 +373,7 @@ function pintarProductosCarrito(productos) {
           }
         }
 
+        //Verifica que esten todos los pedidos bien para poder realizar el pedido
         if (contMal === 0) {
           registrarPedido(carritoCompra);
           alert("PEDIDO REALIZADO CORRECTAMENTE");
@@ -371,6 +384,7 @@ function pintarProductosCarrito(productos) {
         }
       }
 
+      //Devuelve las unidades para el pedido
       async function obtenerUnidades(producto) {
         return new Promise((resolve, reject) => {
           returnUnidadProd(producto, function (unidades) {
@@ -438,9 +452,11 @@ for (const input of inputsUnidadesProducto) {
 
 /*------------------------------------------------FUNCIONALIDAD PRODUCTOS PAGINA PRINCIPAL-------------------------------------------------------*/
 
+//Detectar el boton de compra
 let botonesCompra = document.querySelectorAll(".botonCompra");
 for (const botonCompra of botonesCompra) {
   botonCompra.addEventListener("click", function () {
+    //Si hay sesion iniciada te permite comprar
     if (!verificarCookie("username")) {
       let nombreRecoger = botonCompra.id.split("-");
       nombreRecoger = nombreRecoger[1];
@@ -494,6 +510,7 @@ for (const botonCompra of botonesCompra) {
             ]);
           }
 
+          //Actualiza y muestra el carrito con el contador de productos
           actualizarNumeroCarrito();
           mostrarDialogo();
         } else {
@@ -507,9 +524,11 @@ for (const botonCompra of botonesCompra) {
   });
 }
 
+//Detectar el boton de cesta
 let botonesCesta = document.querySelectorAll(".botonCesta");
 for (const botonCesta of botonesCesta) {
   botonCesta.addEventListener("click", function () {
+    //Si no hay sesion iniciada no puede añadir a la cesta
     if (!verificarCookie("username")) {
       let nombreRecoger = botonCesta.id.split("-");
       nombreRecoger = nombreRecoger[1];
@@ -564,13 +583,15 @@ for (const botonCesta of botonesCesta) {
               unidades,
               precioProd,
             ]);
+
+            //Guarda el nuevo productos añadido a la cookie
             guardarArrayEnCookie(
               "carritoCompraCookie",
               carritoCompra,
               "Thu, 01 Jan 2100 00:00:00 GMT"
             );
           }
-
+          //Actualizar el numero del carrito
           actualizarNumeroCarrito();
         } else {
           alert(
@@ -590,6 +611,7 @@ function actualizarNumeroCarrito() {
   TotalProductosPagina.textContent = carritoCompra.length;
 }
 
+//Elimina la cookie que se le pase por parametro
 function delete_cookie(name) {
   document.cookie = name + "=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;";
 }

@@ -77,10 +77,12 @@
         // Verificar si los datos son correctos en la BBDD
         $con = mysqli_connect("localhost", "root", "", "tienda");
         if (!$con->connect_error) {
+
             // Consulta: SELECT * FROM productos where nombre_producto="?";
-        
             $consulta = 'SELECT * FROM productos where nombre_producto = "' . $_COOKIE["prodname"] . '"';
             $result = mysqli_query($con, $consulta);
+
+            //Verificamos si se ejecuta bien la consulta.
             if ($result) {
                 // Obtener todos los resultados
                 $productos = mysqli_fetch_all($result);

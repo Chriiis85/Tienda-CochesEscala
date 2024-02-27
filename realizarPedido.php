@@ -1,24 +1,24 @@
 <?php
+session_start();
 //Recibimos por POST el array que nos pasa con el pedido.
 $postData = file_get_contents('php://input');
 
-// Decodificar los datos JSON recibidos
+// Decodificar los datos JSON recibidos.
 $jsonData = json_decode($postData, true);
 if ($jsonData !== null && isset($jsonData['carritoCompra'])) {
-    // Obtener el array 'carritoCompra'
+    // Obtener el array 'carritoCompra'.
     $carritoCompra = $jsonData['carritoCompra'];
-    // Imprimir los datos recibidos para verificar si se recibieron correctamente
-    //print_r($carritoCompra);
-    //Recoger el ultimo ID de pedido que hay en la base de datos
+    // Imprimir los datos recibidos para verificar si se recibieron correctamente.
+    //Recoger el ultimo ID de pedido que hay en la base de datos.
     $ultimoId = recogerUltimoID();
-    //Bucle que recorrer el array y va insertando los productos
+    //Bucle que recorrer el array y va insertando los productos.
     for ($i = 0; $i < sizeof($carritoCompra); $i++) {
         //Recibe el nombre del Producto y guarda su ID para insertar el Pedido, tambien la cantidad y el id del usuario.
         $idProducto = devovlerNombreProducto($carritoCompra[$i][1]);
         $cantidad = $carritoCompra[$i][2];
-        $idUsuario = 1;
+        $idUsuario = devolverIDUsu($_COOKIE["username"]);
         if (consultarCantidadDisponible($idProducto) >= $cantidad && $cantidad > 0) {
-            //Llama a la funcion de registrar Pedido con los datos proporcionados
+            //Llama a la funcion de registrar Pedido con los datos proporcionados.
             registrarPedido($ultimoId + 1, $idUsuario, $idProducto, $cantidad);
             //Actualizar la tabla para quitar las unidades
             $cantidadDisp = consultarCantidadDisponible($idProducto) - $cantidad;
@@ -32,6 +32,23 @@ if ($jsonData !== null && isset($jsonData['carritoCompra'])) {
     echo "Error: No se recibieron datos válidos en el cuerpo de la solicitud.";
 }
 
+//Funcion que devuelve el id del usuario para poder realizar el registro
+function devolverIDUsu($nombreUsu)
+{
+    //CONEXION CON LA BD
+    $con = mysqli_connect("localhost", "root", "", "tienda");
+    //CONSULTA 'SELECT id_usuario  FROM `usuarios` WHERE nombre_usuario="CHRISTIAN";
+    $consulta = 'SELECT id_usuario FROM `usuarios` WHERE nombre_usuario="' . $nombreUsu . '";';
+
+    //EJECUTAR LA CONSULTA
+    $result = $con->query($consulta);
+    $row = $result->fetch_all();
+    $idUsu = $row[0][0];
+
+    // CERRAR LA CONEXION
+    mysqli_close($con);
+    return $idUsu;
+}
 
 //Funcion que devuelve el id del producto dado un nombre de producto.
 function devovlerNombreProducto($nombreProd)
@@ -40,10 +57,13 @@ function devovlerNombreProducto($nombreProd)
     $con = mysqli_connect("localhost", "root", "", "tienda");
     //CONSULTA 'SELECT id_producto FROM `productos` WHERE nombre_producto="AMR23";
     $consulta = 'SELECT id_producto FROM `productos` WHERE nombre_producto="' . $nombreProd . '";';
+
+    //EJECUTAR LA CONSULTA
     $result = $con->query($consulta);
     $row = $result->fetch_all();
     $idProducto = $row[0][0];
-    // Cerrar la conexión
+
+    // CERRAR LA CONEXION
     mysqli_close($con);
     return $idProducto;
 }
@@ -57,28 +77,28 @@ function registrarPedido($id, $idUsuario, $idProducto, $cantidad)
     $consulta = 'INSERT INTO `pedidos`(`id_pedido`,`id_usuario`, `id_producto`, `cantidad`) VALUES (?, ?, ?, ?)';
     $stmt = mysqli_prepare($con, $consulta);
 
-    // Verificar si la preparación de la consulta fue exitosa
+    // VERIFICAR LA CONSULTA
     if ($stmt) {
-        // Unir los parámetros con la declaración de la consulta
+        //DEFINIR LOS PARAMETROS
         mysqli_stmt_bind_param($stmt, 'iiii', $id, $idUsuario, $idProducto, $cantidad);
 
-        // Ejecutar la consulta preparada
+        // EJECUTAR LA CONSULTA
         mysqli_stmt_execute($stmt);
 
-        // Verificar si se insertó correctamente
+        // VERIFICAR SI SE INSERTA CORRECTAMENTE
         if (mysqli_stmt_affected_rows($stmt) > 0) {
             echo "Pedido registrado correctamente.";
         } else {
             echo "Error al registrar el pedido.";
         }
 
-        // Cerrar la consulta preparada
+        // CERRAR EL STATEMENT
         mysqli_stmt_close($stmt);
     } else {
         echo "Error al preparar la consulta.";
     }
 
-    // Cerrar la conexión
+    // CERRAR LA CONEXION
     mysqli_close($con);
 }
 
@@ -93,44 +113,41 @@ function recogerUltimoID()
     $consulta = 'SELECT MAX(id_pedido) FROM pedidos';
     $stmt = mysqli_prepare($con, $consulta);
 
-    // Enlazar parámetros y ejecutar la consulta
+    //DEFINIR LOS PARAMETROS
     mysqli_stmt_execute($stmt);
 
-    // Obtener resultados
+    // RECOGER LOS RESULTADOS
     mysqli_stmt_bind_result($stmt, $id);
     mysqli_stmt_fetch($stmt);
 
-    // Cerrar la consulta preparada
+    // CERRAR LA CONEXION Y EL STATEMENT
     mysqli_stmt_close($stmt);
-
-    // Cerrar la conexión
     mysqli_close($con);
 
+    //DEVOLER EL ID QUE ESTAMOS BUSCANDO
     return $id;
 }
 
 //Funcion que consulta la cantidad de un producto para verificar la disponibilidad de unidades de un producto.
 function consultarCantidadDisponible($nombre_producto)
 {
-    //CONEXION CON LA BD
+    // CONEXION CON LA BD
     $con = mysqli_connect("localhost", "root", "", "tienda");
 
-    //CONSULTA PREPARADA
+    // CONSULTA PREPARADA
     $consulta = 'SELECT unidades FROM `productos` WHERE id_producto = ?';
     $stmt = mysqli_prepare($con, $consulta);
 
-    // Enlazar parámetros y ejecutar la consulta
+    // DEFINIR LOS PARAMETROS
     mysqli_stmt_bind_param($stmt, 's', $nombre_producto);
     mysqli_stmt_execute($stmt);
 
-    // Obtener resultados
+    // RECOGER LOS RESULTADOS
     mysqli_stmt_bind_result($stmt, $unidades);
     mysqli_stmt_fetch($stmt);
 
-    // Cerrar la consulta preparada
+    // CERRAR LA CONEXION Y EL STATEMENT
     mysqli_stmt_close($stmt);
-
-    // Cerrar la conexión
     mysqli_close($con);
 
     return $unidades;
@@ -139,10 +156,8 @@ function consultarCantidadDisponible($nombre_producto)
 //Funcion que actualiza la cantidad del producto que se ha comprado.
 function actualizarTabla($unidad, $idProducto)
 {
-    // Crear conexión
+    // CREAR Y VERIFICA LA CONEXION
     $con = mysqli_connect("localhost", "root", "", "tienda");
-
-    // Verificar conexión
     if ($con->connect_error) {
         die("Conexión fallida: " . $con->connect_error);
     }
@@ -151,14 +166,14 @@ function actualizarTabla($unidad, $idProducto)
     // Consulta SQL para actualizar el nombre del usuario con el id proporcionado
     $consulta = 'UPDATE productos SET unidades=' . $unidad . ' WHERE id_producto=' . $idProducto . ';';
 
-    // Ejecutar la consulta
+    // EJECUTAR LA CONSULTA
     if ($con->query($consulta) === TRUE) {
         echo "Producto actualizado correctamente";
     } else {
         echo "Error al actualizar el producto: " . $con->error;
     }
 
-    // Cerrar conexión
+    // CERRAR LA CONEXION
     $con->close();
 }
 ?>

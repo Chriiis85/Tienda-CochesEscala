@@ -9,23 +9,21 @@ $con = mysqli_connect("localhost", "root", "", "tienda");
 $consulta = 'SELECT unidades FROM productos WHERE nombre_producto LIKE ?';
 $stmt = mysqli_prepare($con, $consulta);
 
-// Preparar el patrón de búsqueda
+// PREPARAR EL PATRON PARA LA BUSQUEDA
 $nombre_producto = '%' . $nombre_producto . '%';
 
-// Enlazar parámetros y ejecutar la consulta
+// EJECUTAR LA CONSULTA CON LOS PARAMETROS
 mysqli_stmt_bind_param($stmt, 's', $nombre_producto);
 mysqli_stmt_execute($stmt);
 
-// Obtener resultados
+// RECOGER LOS RESULTADOS
 mysqli_stmt_bind_result($stmt, $unidades);
 mysqli_stmt_fetch($stmt);
 
-// Cerrar la consulta preparada
+// CERRAR LA CONEXION Y EL STATEMENT
 mysqli_stmt_close($stmt);
-
-// Cerrar la conexión
 mysqli_close($con);
 
-// Devolver las unidades del producto
+// DEVOLVER LAS UNIDADES DEL PRODUCTO BUSCADO
 echo $unidades;
 ?>

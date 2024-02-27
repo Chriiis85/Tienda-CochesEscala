@@ -1,27 +1,30 @@
 <?php
-// Recibimos los datos del formulario desde el AJAX
+// RECIBIR LOS DATOS DESDE EL FORMULARIO
 $username = $_POST['username'];
 $password = $_POST['password'];
 $name = $_POST['name'];
 $surname = $_POST['surname'];
 $mail = $_POST['mail'];
 
-// Verificar si los datos son correctos en la BBDD
+// CREAR CONEXION CON LA BBDD
 $con = mysqli_connect("localhost", "root", "", "tienda");
 
+//VERIFICAMOS QUE TODOS LOS CAMPOS SE HAYAN INSERTADO SI NO SE LO INDICAMOS
 if (!empty($username) && !empty($password) && !empty($name) && !empty($surname) && !empty($mail)) {
 
-    //Comprobar si la conexión funciona
+    // VERIFICAR EL ESTADO DE LA CONEXION
     if (!$con->connect_error) {
         //INSERT INTO `usuarios`(`nombre_usuario`, `nombre`, `apellidos`, `correo`, `password`) VALUES ()
         // Consulta preparada para evitar inyección SQL
         $consulta = 'INSERT INTO `usuarios`(`nombre_usuario`, `nombre`, `apellidos`, `correo`, `password`) VALUES (?,?,?,?,?)';
 
-        //Ejecutamos la consulta
+        //EJECTUAR LA CONSULTA Y DEFINIR LOS PARAMETROS
         $stmt = mysqli_prepare($con, $consulta);
         mysqli_stmt_bind_param($stmt, 'sssss', $username, $name, $surname, $mail, $password);
         mysqli_stmt_execute($stmt);
 
+        //SI NOS DEVUELVE FILAS ES QUE EL USUARIO SE HA CREADO CORRECTAMENTE Y REDIRIGIMOS AL INICIO DE SESION DE LO CONTRARIO VACIAMOS Y LE INDICAMOS
+        //QUE HAY UN ERROR Y RECARGAMOS PAGINA
         if (mysqli_stmt_affected_rows($stmt) > 0) {
             echo '<script language="javascript">';
             echo 'alert("Usuario insertado correctamente.");';
@@ -33,12 +36,14 @@ if (!empty($username) && !empty($password) && !empty($name) && !empty($surname) 
             header("Location: Registrar.php");
         }
 
+        //CERRAMOS CONSULTA Y CONEXION
         mysqli_stmt_close($stmt);
         mysqli_close($con);
     } else {
         die("Error de conexión: " . mysqli_connect_error());
     }
 } else {
+    //VERIFICAMOS QUE TODOS LOS CAMPOS SE HAYAN INSERTADO SI NO SE LO INDICAMOS
     echo '<script language="javascript">';
     echo 'alert("Debe Rellenar todos los campos.");';
     echo 'window.location.href = "Registrar.php";';

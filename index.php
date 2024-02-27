@@ -22,6 +22,8 @@ if (!$con->connect_error) {
     // Consulta: SELECT * FROM productos;
     $consulta = "SELECT * FROM productos";
     $result = mysqli_query($con, $consulta);
+
+    //Verificamos si se ejecuta bien la consulta.
     if ($result) {
         // Obtener todos los resultados
         $productos = mysqli_fetch_all($result);

@@ -1,3 +1,4 @@
+/*EXCEPCIONES CONTROLADAS DE LOS ARCHIVOS*/
 {
   "extends": [
     "development"

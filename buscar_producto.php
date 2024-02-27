@@ -11,6 +11,7 @@ if (!$con->connect_error) {
     $consulta = "SELECT nombre_producto FROM productos WHERE nombre_producto LIKE '%" . $letra . "%'";
     $result = mysqli_query($con, $consulta);
 
+    //Verificamos si se ejecuta bien la consulta.
     if ($result) {
         // Obtener todos los resultados
         $productos = mysqli_fetch_all($result);

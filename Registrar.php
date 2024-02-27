@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+<!--CABECERA Y HOJAS DE ESTILO-->
 
 <head>
     <meta charset="UTF-8">
@@ -7,40 +8,53 @@
     <title>Registrar Usuario - CModels Scale</title>
     <link rel="stylesheet" href="CSS/login.css">
 </head>
+<!--CONTENIDO PRINCIPAL-->
 
 <body>
     <div class="box">
         <h1>REGISTRAR USUARIO</h1>
+        <!--FORMULARIO REGISTRO-->
         <form role="form" method="post" action="registrar_usuario.php">
+
+            <!--USERNAME INPUT-->
             <div class="inputBox">
                 <input type="text" id="username" name="username" autocomplete="off" required>
                 <label>Username</label>
             </div>
+
+            <!--NAME INPUT-->
             <div class="inputBox">
                 <input type="text" id="name" name="name" autocomplete="off" required>
                 <label>Nombre</label>
             </div>
+
+            <!--SURNAME INPUT-->
             <div class="inputBox">
                 <input type="text" id="surname" name="surname" autocomplete="off" required>
                 <label>Apellidos</label>
             </div>
+
+            <!--MAIL INPUT-->
             <div class="inputBox">
                 <input type="mail" id="mail" name="mail" autocomplete="off" required>
                 <label>E-Mail</label>
             </div>
+
+            <!--PASSWORD INPUT-->
             <div class="inputBox">
                 <input type="password" id="password" name="password" autocomplete="off" required>
                 <label>Password</label>
             </div>
+            <!--ENLACE INICIAR SESION-->
             <h3>Tienes una cuenta?! <a href="InicioSesion.php">Inicia Sesión</a></h3>
             <div class="botones">
-                <!-- Submit button -->
+                <!--BOTON SUBMIT-->
                 <button class="botonRegistro" type="submit" id="registrar" class="btn btn-primary btn-block mb-4">
                     Confirmar Registro
                 </button>
             </div>
         </form>
-        <!-- Submit button -->
+        <!--BOTON VOLVER ATRÁS-->
         <button class="botonCentro" formnovalidate id="volver" onclick="volver();"
             class="btn btn-primary btn-block mb-4">
             Volver Atrás
@@ -86,8 +100,9 @@ PARA EVITAR ESTO SE HA CAMBIADO LA FORMA DE HACERLO Y SE HACE MEDIANTE UN FORM N
         xhttp.send("username=" + username + "&password=" + password + "&name=" + name + "&surname=" + surname + "&mail=" + mail);
     });*/
 
+    //FUNCION PARA VOLVER ATRAS AL CLICAR EL BOTON
     function volver() {
-        window.location.href = "InicioSesion.php";
+        window.location.href = "index.php";
     }
 </script>
 

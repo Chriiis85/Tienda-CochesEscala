@@ -1,43 +1,46 @@
 <?php
 session_start();
-// Recibimos los datos del formulario desde el AJAX
+// RECIBIMOS LOS DATOS DEL FORMULARIO DESDE EL AJAX
 $username = $_POST['username'];
 $password = $_POST['password'];
 
-// Verificar si los datos son correctos en la BBDD
+// VERIFICAR SI LOS DATOS SON CORRECTOS EN LA BBDD
 $con = mysqli_connect("localhost", "root", "", "tienda");
 
-//Comprobar si la conexión funciona
+//COMPROBAR SI LA CONEXIÓN FUNCIONA
 if (!$con->connect_error) {
-    // Consulta preparada para evitar inyección SQL
+    // CONSULTA PREPARADA PARA EVITAR INYECCIÓN SQL
     $consulta = 'SELECT * FROM usuarios WHERE nombre_usuario=? AND password=?';
 
-    //Ejecutamos la consulta
+    //EJECUTAMOS LA CONSULTA
     $stmt = mysqli_prepare($con, $consulta);
     mysqli_stmt_bind_param($stmt, 'ss', $username, $password);
     mysqli_stmt_execute($stmt);
     $result = mysqli_stmt_get_result($stmt);
 
-    //Si deveulve resultados y filas, es que existe un usuario con ese nombre y contraseña ya que nos devuelve la consulta una fila
+    //SI DEVEULVE RESULTADOS Y FILAS, ES QUE EXISTE UN USUARIO CON ESE NOMBRE Y CONTRASEÑA YA QUE NOS DEVUELVE LA CONSULTA UNA FILA
     if ($result) {
-        //Numeros de fila que deuelve
+        //NUMEROS DE FILA QUE DEUELVE
         $num_rows = mysqli_num_rows($result);
 
-        //Si devuelve mas de una fila existe y los datos son validos
+        //SI DEVUELVE MAS DE UNA FILA EXISTE Y LOS DATOS SON VALIDOS
         if ($num_rows > 0) {
-            setcookie("username", $username, time() + 3600, "/"); // Expires in 1 hour
+            //CREAMOS LA COOKIE PARA RECOGER EL NOMBRE DEL USUARIO
+            setcookie("username", $username, time() + 3600, "/");
+            //REDIRIGIMOS AL USUARIO
             echo '<script language="javascript">';
             echo 'alert("Bienvenido de nuevo: ' . $username . '");';
             echo 'window.location.href = "index.php";';
             echo '</script>';
         } else {
+            //REDIRIGIMOS AL USUARIO
             echo '<script language="javascript">';
             echo 'alert("No se ha podido Iniciar Sesión");';
             echo 'window.location.href = "InicioSesion.php";';
             echo '</script>';
         }
 
-        // Cerrar la conexión
+        // CERRAR LA CONEXIÓN
         mysqli_close($con);
     } else {
         echo "Error en la consulta: " . mysqli_error($con);

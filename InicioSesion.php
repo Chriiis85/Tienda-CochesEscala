@@ -1,36 +1,42 @@
 <!DOCTYPE html>
 <html>
 
+<!--CABECERA Y HOJAS DE ESTILO-->
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inicio Sesión - CModels Scale</title>
     <link rel="stylesheet" href="CSS/login.css">
 </head>
+<!--CONTENIDO PRINCIPAL-->
 
 <body>
     <div class="box">
         <h1>INICIAR SESIÓN</h1>
+        <!--FORMULARIO DE REGISTRO-->
         <form role="form" method="post" action="validar_usuario.php">
-
+            <!--USERNAE INPUT-->
             <div class="inputBox">
                 <input type="text" id="username" name="username" autocomplete="off" required>
                 <label>Username</label>
             </div>
+            <!--PASSWORD INPUT-->
             <div class="inputBox">
                 <input type="password" id="password" name="password" autocomplete="off" required>
                 <label>Password</label>
             </div>
+            <!--ENLACE REGISTRAR-->
             <h3>No tienes cuenta?! <a href="Registrar.php">Registrate</a></h3>
             <div class="botones">
-                <!-- Submit button -->
+                <!--BOTON SUBMIT-->
                 <button class="botonRegistro" type="submit" id="iniciarSesion" class="btn btn-primary btn-block mb-4">
                     Iniciar Sesión
                 </button>
 
             </div>
         </form>
-        <!-- Submit button -->
+        <!--BOTON VOLVER ATRÁS-->
         <button class="botonCentro" onclick="volver();" id="volver" class="btn btn-primary btn-block mb-4">
             Volver Atrás
         </button>
@@ -84,6 +90,7 @@ PARA EVITAR ESTO SE HA CAMBIADO LA FORMA DE HACERLO Y SE HACE MEDIANTE UN FORM N
         location.href = "index.php";
     });*/
 
+    //FUNCION PARA VOLVER ATRAS AL CLICAR EL BOTON
     function volver() {
         window.location.href = "index.php";
     }
